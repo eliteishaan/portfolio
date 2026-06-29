@@ -1,5 +1,6 @@
 import React from 'react'
 import { GsapReveal } from '@/components/animation/GsapReveal'
+import { GsapPin } from '@/components/animation/GsapPin'
 import { ABOUT_CONTENT } from '@/content/about'
 import { TYPOGRAPHY } from '@/lib/design-tokens/typography'
 import { cn } from '@/lib/utils'
@@ -15,8 +16,8 @@ export const About = () => {
       <div className="relative z-10 mx-auto w-full max-w-[1600px] px-6 md:px-12">
         <div className="flex flex-col justify-between gap-24 lg:flex-row lg:items-end lg:gap-12">
           {/* Asymmetric Left: Massive Bleeding Typography */}
-          <div className="relative w-full lg:w-3/5">
-            <GsapReveal>
+          <GsapPin className="relative w-full lg:w-3/5">
+            <GsapReveal split>
               <h2 className={cn(TYPOGRAPHY.display, '-ml-[2vw] whitespace-nowrap')}>
                 {ABOUT_CONTENT.title}
               </h2>
@@ -26,7 +27,7 @@ export const About = () => {
                 {ABOUT_CONTENT.subtitle} — EST. 2026
               </div>
             </GsapReveal>
-          </div>
+          </GsapPin>
 
           {/* Asymmetric Right: Dense Manifesto Block */}
           <div className="w-full lg:w-1/3 lg:pb-[2vw]">
