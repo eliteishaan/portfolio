@@ -1,4 +1,4 @@
-export type Project = {
+﻿export type Project = {
   id: string
   number: string
   year: string
@@ -8,6 +8,8 @@ export type Project = {
   tech: string
   image: string
   align: 'left' | 'right'
+  href: string
+  cta: string
 }
 
 export const PROJECTS_CONTENT = {
@@ -19,39 +21,45 @@ export const PROJECTS_CONTENT = {
       number: '01',
       year: '2024',
       category: 'Architecture & Frontend',
-      title: 'Fintech Core Platform',
+      title: 'Financial Dashboard Concept',
       description:
-        'A secure, high-performance financial dashboard handling real-time data streaming for a Fortune 500 bank.',
+        'A reference architecture for a secure, high-performance dashboard with dense data views and responsive interaction patterns.',
       tech: 'React + Tailwind + Zustand',
       image:
         'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop',
       align: 'left',
+      href: '#contact',
+      cta: 'Discuss Similar Work',
     },
     {
       id: 'proj-002',
       number: '02',
       year: '2023',
       category: 'Creative Engineering',
-      title: 'MedTech AI Assistant',
+      title: 'AI Assistant Prototype',
       description:
-        'HIPAA-compliant conversational AI agent designed to streamline patient intake and diagnosis routing.',
+        'A product prototype exploring guided intake, retrieval workflows, and careful human handoff patterns.',
       tech: 'Three.js + GSAP + GLSL',
       image:
         'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
       align: 'right',
+      href: '#contact',
+      cta: 'Plan an AI Build',
     },
     {
       id: 'proj-003',
       number: '03',
       year: '2022',
       category: 'Design Systems',
-      title: 'Global Logistics SaaS',
+      title: 'Operations SaaS System',
       description:
-        'An end-to-end supply chain visibility platform serving millions of tracking events daily.',
+        'A modular SaaS interface model for workflows that need status visibility, repeatable components, and clear hierarchy.',
       tech: 'Radix + CVA + Framer',
       image:
         'https://images.unsplash.com/photo-1507238692062-7101eeaeb1b9?q=80&w=2000&auto=format&fit=crop',
       align: 'left',
+      href: '#contact',
+      cta: 'Scope a System',
     },
   ] as Project[],
 }

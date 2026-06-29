@@ -1,5 +1,5 @@
-export const SKILLS_CONTENT = {
-  title: 'Our Arsenal',
+﻿export const SKILLS_CONTENT = {
+  title: 'Core Capabilities',
   subtitle: 'Capabilities',
   groups: [
     { title: 'Development', skills: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Python'] },

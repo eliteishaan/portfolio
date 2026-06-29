@@ -1,30 +1,26 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Lenis from 'lenis'
 import { gsap, ScrollTrigger } from '@/lib/animation/gsap'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { LenisContext } from '@/hooks/useLenis'
 
 export const SmoothScrollProvider = ({ children }: { children: React.ReactNode }) => {
-  const [lenis, setLenis] = useState<Lenis | null>(null)
   const lenisRef = useRef<Lenis | null>(null)
   const prefersReducedMotion = useReducedMotion()
+
+  const [lenis, setLenis] = React.useState<Lenis | null>(null)
 
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // Destroy existing instance if any (React Strict Mode safety)
     if (lenisRef.current) {
       lenisRef.current.destroy()
+      lenisRef.current = null
     }
 
-    if (prefersReducedMotion) {
-      // If reduced motion is enabled, we still create Lenis but immediately disable smoothing
-      // or we just skip it, but some plugins might depend on it. Let's just create it and destroy or not run it.
-      // Better yet, just don't initialize Lenis smoothing.
-      return
-    }
+    if (prefersReducedMotion) return
 
     const lenisInstance = new Lenis({
       duration: 1.2,
@@ -36,29 +32,23 @@ export const SmoothScrollProvider = ({ children }: { children: React.ReactNode }
       touchMultiplier: 2,
     })
 
+    const updateScrollTrigger = () => ScrollTrigger.update()
+    const tick = (time: number) => lenisInstance.raf(time * 1000)
+
     lenisRef.current = lenisInstance
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLenis(lenisInstance)
-
-    // Sync Lenis with ScrollTrigger
-    lenisInstance.on('scroll', ScrollTrigger.update)
-
-    // Add to GSAP ticker
-    gsap.ticker.add((time) => {
-      lenisInstance.raf(time * 1000)
-    })
-
-    // Lag smoothing ensures GSAP doesn't jump aggressively
+    lenisInstance.on('scroll', updateScrollTrigger)
+    gsap.ticker.add(tick)
     gsap.ticker.lagSmoothing(0)
 
     return () => {
-      if (lenisRef.current) {
-        lenisRef.current.destroy()
+      lenisInstance.off('scroll', updateScrollTrigger)
+      gsap.ticker.remove(tick)
+      lenisInstance.destroy()
+      if (lenisRef.current === lenisInstance) {
         lenisRef.current = null
       }
-      gsap.ticker.remove((time) => {
-        lenisInstance.raf(time * 1000)
-      })
     }
   }, [prefersReducedMotion])
 

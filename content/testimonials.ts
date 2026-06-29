@@ -1,30 +1,30 @@
-export const TESTIMONIALS_CONTENT = {
-  title: 'Client Results',
-  subtitle: 'Testimonials',
+﻿export const TESTIMONIALS_CONTENT = {
+  title: 'Working Principles',
+  subtitle: 'Standards',
   items: [
     {
       id: 't1',
       quote:
-        "Nexus Studio completely transformed our product architecture. Their team shipped faster and with higher quality than any agency we've ever hired.",
-      author: 'Sarah Jenkins',
-      role: 'CEO, TechCorp',
-      company: 'TechCorp',
+        'Every build should have a clear architecture, a small surface area, and a path to production before the first animation is added.',
+      author: 'Architecture',
+      role: 'Foundation Standard',
+      company: 'Nexus Studio',
     },
     {
       id: 't2',
       quote:
-        'The AI integration they built for us reduced our operational overhead by 40%. They are not just engineers; they are true product strategists.',
-      author: 'Michael Chen',
-      role: 'Founder, HealthAI',
-      company: 'HealthAI',
+        'Interfaces should feel refined without hiding the important work: clarity, validation, accessibility, and fast recovery from errors.',
+      author: 'Experience',
+      role: 'Interface Standard',
+      company: 'Nexus Studio',
     },
     {
       id: 't3',
       quote:
-        'Their motion design and UI execution is world-class. Our conversion rates doubled after the redesign they implemented.',
-      author: 'Elena Rodriguez',
-      role: 'VP Product, Global Retail',
-      company: 'Global Retail',
+        'Motion earns its place when it improves orientation, pacing, or brand memory without compromising performance or control.',
+      author: 'Motion',
+      role: 'Interaction Standard',
+      company: 'Nexus Studio',
     },
   ],
 }

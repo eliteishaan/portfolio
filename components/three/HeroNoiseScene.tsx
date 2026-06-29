@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 
-import React, { useRef, useMemo, useEffect } from 'react'
+import React, { useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { vertexShader, fragmentShader } from './shaders/noise'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
@@ -40,10 +40,13 @@ const NoisePlane = () => {
 
 export const HeroNoiseScene = () => {
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 h-full w-full opacity-50">
+    <div
+      className="pointer-events-none absolute inset-0 z-0 h-full w-full opacity-50"
+      aria-hidden="true"
+    >
       <Canvas
         camera={{ position: [0, 0, 1] }}
-        dpr={[1, 1.5]} // Optimize DPR for performance
+        dpr={[1, 1.25]}
         gl={{ powerPreference: 'high-performance', antialias: false }}
       >
         <NoisePlane />

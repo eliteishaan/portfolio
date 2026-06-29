@@ -1,4 +1,4 @@
-export const CONTACT_CONTENT = {
+﻿export const CONTACT_CONTENT = {
   title: 'Start Your Project',
   subtitle: 'Contact',
   form: {
@@ -13,10 +13,9 @@ export const CONTACT_CONTENT = {
     budgets: ['$10k - $25k', '$25k - $50k', '$50k - $100k', '$100k+'],
   },
   socials: [
-    { label: 'Twitter / X', href: 'https://twitter.com' },
-    { label: 'GitHub', href: 'https://github.com' },
-    { label: 'LinkedIn', href: 'https://linkedin.com' },
+    { label: 'Email', href: 'mailto:hello@nexusstudio.dev' },
+    { label: 'Start a project', href: '#contact' },
   ],
-  status: 'Available for new opportunities in late 2024.',
-  email: 'hello@example.com',
+  status: 'Available for focused product and engineering engagements.',
+  email: 'hello@nexusstudio.dev',
 }

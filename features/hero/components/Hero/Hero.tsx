@@ -1,9 +1,9 @@
-'use client'
+﻿'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import SplitType from 'split-type'
-import { gsap, useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
+import { gsap, useGSAP } from '@/lib/animation/gsap'
 import { runHeroEntrance, runHeroScrollChoreography } from '@/lib/animation/timelines'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { BlueprintLines } from '../BlueprintLines'
@@ -34,7 +34,7 @@ export const Hero = () => {
       try {
         const tier = await getGPUTier()
         setGpuTier(tier.tier)
-      } catch (_e) {
+      } catch {
         setGpuTier(1) // Fallback to low tier on error
       }
     }
@@ -46,10 +46,12 @@ export const Hero = () => {
       if (prefersReducedMotion) return
 
       const lines = gsap.utils.toArray<SVGGElement>('.hero-line', linesRef.current)
+      let nameSplit: SplitType | null = null
+      let roleSplit: SplitType | null = null
 
       if (nameRef.current && roleRef.current && ctaRef.current && indicatorRef.current) {
-        const nameSplit = new SplitType(nameRef.current, { types: 'chars' })
-        const roleSplit = new SplitType(roleRef.current, { types: 'words' })
+        nameSplit = new SplitType(nameRef.current, { types: 'chars' })
+        roleSplit = new SplitType(roleRef.current, { types: 'words' })
 
         runHeroEntrance(
           lines,
@@ -68,6 +70,11 @@ export const Hero = () => {
           ctaRef.current,
           lightContainerRef.current
         )
+      }
+
+      return () => {
+        nameSplit?.revert()
+        roleSplit?.revert()
       }
     },
     { scope: containerRef, dependencies: [prefersReducedMotion] }

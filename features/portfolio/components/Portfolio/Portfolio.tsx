@@ -1,20 +1,16 @@
-'use client'
+﻿'use client'
 
 import React, { useState, useEffect } from 'react'
 import { Section, Container, Stack, H2, Title } from '@/components/ui'
 import { PROJECTS_CONTENT } from '@/content/projects'
 import { PortfolioProject } from './PortfolioProject'
+import { useCoarsePointer } from '@/hooks/useCoarsePointer'
 
 export const Portfolio = () => {
   // Global point light for desktop
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
-  const [isTouch, setIsTouch] = useState(false)
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsTouch(window.matchMedia('(pointer: coarse)').matches)
-  }, [])
+  const isTouch = useCoarsePointer()
 
   useEffect(() => {
     if (isTouch || !isHovering) return

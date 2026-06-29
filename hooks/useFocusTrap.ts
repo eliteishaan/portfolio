@@ -1,20 +1,19 @@
-import { useEffect, RefObject } from 'react'
+﻿import { useEffect, RefObject } from 'react'
 
 export const useFocusTrap = (containerRef: RefObject<HTMLElement | null>, isActive: boolean) => {
   useEffect(() => {
     if (typeof window === 'undefined' || !isActive || !containerRef.current) return
 
     const focusableElements = containerRef.current.querySelectorAll(
-      'a[href], button, textarea, input[type="text"], input[type="radio"], input[type="checkbox"], select'
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled])'
     )
 
     if (focusableElements.length === 0) return
 
     const firstElement = focusableElements[0] as HTMLElement
     const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement
-    const previousFocus = document.activeElement as HTMLElement
+    const previousFocus = document.activeElement as HTMLElement | null
 
-    // Focus the first element when trap activates
     firstElement.focus()
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -25,11 +24,9 @@ export const useFocusTrap = (containerRef: RefObject<HTMLElement | null>, isActi
           e.preventDefault()
           lastElement.focus()
         }
-      } else {
-        if (document.activeElement === lastElement) {
-          e.preventDefault()
-          firstElement.focus()
-        }
+      } else if (document.activeElement === lastElement) {
+        e.preventDefault()
+        firstElement.focus()
       }
     }
 
@@ -37,10 +34,8 @@ export const useFocusTrap = (containerRef: RefObject<HTMLElement | null>, isActi
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
-      // Restore focus
-      if (previousFocus) {
-        // use a slight timeout to avoid focus rings blinking incorrectly sometimes
-        setTimeout(() => previousFocus.focus(), 0)
+      if (previousFocus?.isConnected) {
+        previousFocus.focus()
       }
     }
   }, [isActive, containerRef])

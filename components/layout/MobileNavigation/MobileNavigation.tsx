@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
@@ -21,6 +21,7 @@ const MenuIcon = (props: React.SVGProps<SVGSVGElement>) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    aria-hidden="true"
     {...props}
   >
     <line x1="4" x2="20" y1="12" y2="12" />
@@ -40,6 +41,7 @@ const CloseIcon = (props: React.SVGProps<SVGSVGElement>) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    aria-hidden="true"
     {...props}
   >
     <path d="M18 6L6 18M6 6l12 12" />
@@ -48,11 +50,24 @@ const CloseIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigationProps>(
   ({ className, items, isOpen, onClose, onToggle, ...props }, ref) => {
+    const wrapperRef = React.useRef<HTMLDivElement>(null)
     const menuRef = React.useRef<HTMLDivElement>(null)
     const pathname = usePathname()
 
+    const setWrapperRefs = React.useCallback(
+      (node: HTMLDivElement | null) => {
+        wrapperRef.current = node
+        if (typeof ref === 'function') {
+          ref(node)
+        } else if (ref) {
+          ref.current = node
+        }
+      },
+      [ref]
+    )
+
     useBodyScrollLock(isOpen)
-    useClickOutside(menuRef, onClose, isOpen)
+    useClickOutside(wrapperRef, onClose, isOpen)
     useFocusTrap(menuRef, isOpen)
 
     React.useEffect(() => {
@@ -66,7 +81,7 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
     }, [isOpen, onClose])
 
     return (
-      <div ref={ref} className={cn('flex md:hidden', className)} {...props}>
+      <div ref={setWrapperRefs} className={cn('flex md:hidden', className)} {...props}>
         <button
           type="button"
           onClick={onToggle}
@@ -78,7 +93,6 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
           {isOpen ? <Icon icon={CloseIcon} size="md" /> : <Icon icon={MenuIcon} size="md" />}
         </button>
 
-        {/* Overlay backdrop */}
         <div
           className={cn(
             'bg-background/95 fixed inset-0 z-40 backdrop-blur-sm transition-opacity duration-200 ease-out',
@@ -87,7 +101,6 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
           aria-hidden="true"
         />
 
-        {/* Menu content */}
         <div
           id="mobile-menu"
           ref={menuRef}
@@ -95,6 +108,9 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
             'fixed inset-x-0 top-16 z-40 flex flex-col items-center justify-center gap-6 p-6 transition-opacity duration-200 ease-out',
             isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none hidden opacity-0'
           )}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
         >
           {items.map((item) => {
             const isActive = pathname === item.href

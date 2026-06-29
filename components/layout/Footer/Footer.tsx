@@ -1,24 +1,23 @@
-'use client'
+﻿'use client'
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { type FooterProps } from './Footer.types'
-import { Container, Stack, Grid, Body, Caption, Title } from '@/components/ui'
+import { Container, Stack, Grid, Body, Caption } from '@/components/ui'
 import { CONTACT_CONTENT } from '@/content/contact'
 
 export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, ...props }, ref) => {
-  // Current time updater
   const [time, setTime] = React.useState<string>('')
+
   React.useEffect(() => {
-    const updateTime = () => {
-      setTime(
-        new Date().toLocaleTimeString('en-US', {
-          hour: '2-digit',
-          minute: '2-digit',
-          timeZone: 'America/New_York',
-        }) + ' EST'
-      )
-    }
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'America/New_York',
+      timeZoneName: 'short',
+    })
+
+    const updateTime = () => setTime(formatter.format(new Date()))
     updateTime()
     const interval = setInterval(updateTime, 10000)
     return () => clearInterval(interval)
@@ -36,7 +35,6 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, .
       <Container maxWidth="7xl" className="relative z-10">
         <Stack gap="xl">
           <Grid cols={1} className="gap-12 md:grid-cols-12">
-            {/* Left: Status & Local Time */}
             <div className="flex flex-col gap-6 md:col-span-4">
               <Stack gap="sm">
                 <Caption className="text-muted tracking-widest uppercase">Status</Caption>
@@ -44,20 +42,17 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, .
               </Stack>
               <Stack gap="sm">
                 <Caption className="text-muted tracking-widest uppercase">Local Time</Caption>
-                <Body className="text-text-secondary font-mono">{time || '—'}</Body>
+                <Body className="text-text-secondary font-mono">{time || '-'}</Body>
               </Stack>
             </div>
 
-            {/* Middle: Socials */}
             <div className="flex flex-col gap-6 md:col-span-4">
               <Caption className="text-muted tracking-widest uppercase">Connect</Caption>
               <ul className="flex flex-col gap-3">
-                {CONTACT_CONTENT.socials.map((social, i) => (
-                  <li key={i}>
+                {CONTACT_CONTENT.socials.map((social) => (
+                  <li key={social.href}>
                     <a
                       href={social.href}
-                      target="_blank"
-                      rel="noreferrer"
                       className="text-text-secondary hover:text-accent font-medium transition-colors duration-300"
                     >
                       {social.label}
@@ -67,7 +62,6 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, .
               </ul>
             </div>
 
-            {/* Right: Direct Contact */}
             <div className="flex flex-col gap-6 md:col-span-4">
               <Caption className="text-muted tracking-widest uppercase">Inquiries</Caption>
               <a
@@ -79,7 +73,6 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, .
             </div>
           </Grid>
 
-          {/* Giant Watermark */}
           <div className="pointer-events-none mt-12 flex w-full items-center justify-center select-none md:mt-24">
             <span
               className="text-text-primary font-serif font-bold italic opacity-[0.03]"
@@ -93,9 +86,8 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, .
             </span>
           </div>
 
-          {/* Copyright */}
           <div className="text-text-secondary mt-8 flex flex-col items-center justify-between font-mono text-sm sm:flex-row">
-            <span>© {new Date().getFullYear()} Nexus Studio.</span>
+            <span>(c) {new Date().getFullYear()} Nexus Studio.</span>
             <span>All rights reserved.</span>
           </div>
         </Stack>

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 import { gsap, useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
 
 import React, { useRef, useState, useEffect } from 'react'
@@ -7,6 +7,27 @@ import { Section, Container, Stack, Title } from '@/components/ui'
 import { CONTACT_CONTENT } from '@/content/contact'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { ArrowRight } from 'lucide-react'
+import { useCoarsePointer } from '@/hooks/useCoarsePointer'
+
+type ContactStatus = 'idle' | 'success' | 'error'
+
+type ContactFormState = {
+  company: string
+  projectType: string
+  budget: string
+  email: string
+  website: string
+}
+
+const initialFormState: ContactFormState = {
+  company: '',
+  projectType: '',
+  budget: '',
+  email: '',
+  website: '',
+}
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export const Contact = () => {
   const containerRef = useRef<HTMLElement>(null)
@@ -15,19 +36,18 @@ export const Contact = () => {
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
-  const [isTouch, setIsTouch] = useState(false)
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setIsTouch(window.matchMedia('(pointer: coarse)').matches)
-  }, [])
+  const [form, setForm] = useState<ContactFormState>(initialFormState)
+  const [status, setStatus] = useState<ContactStatus>('idle')
+  const [message, setMessage] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const isTouch = useCoarsePointer()
 
   useGSAP(
     () => {
       if (prefersReducedMotion || !containerRef.current) return
 
       const elements = gsap.utils.toArray<HTMLElement>('.contact-animate', containerRef.current)
-      const blueprintLine = document.querySelector('.bg-border\\/30') as HTMLElement | null
+      const blueprintLine = document.querySelector('.bg-border\/30') as HTMLElement | null
 
       runContactEntrance(containerRef.current, elements, blueprintLine)
 
@@ -36,7 +56,6 @@ export const Contact = () => {
         runFormReveal(formRef.current, formElements)
       }
 
-      // Restore blueprint line on leave back
       ScrollTrigger.create({
         trigger: containerRef.current,
         start: 'top 70%',
@@ -48,7 +67,6 @@ export const Contact = () => {
     { scope: containerRef, dependencies: [prefersReducedMotion] }
   )
 
-  // Cursor light logic
   useEffect(() => {
     if (isTouch || !isHovering) return
     let rafId: number
@@ -78,6 +96,60 @@ export const Contact = () => {
     }
   }, [isHovering, isTouch])
 
+  const updateField = (field: keyof ContactFormState, value: string) => {
+    setForm((current) => ({ ...current, [field]: value }))
+    if (status !== 'idle') {
+      setStatus('idle')
+      setMessage('')
+    }
+  }
+
+  const validateForm = () => {
+    if (form.website.trim()) return 'Submission blocked. Please refresh and try again.'
+    if (!form.company.trim()) return 'Please enter your company or name.'
+    if (!form.projectType) return 'Please select a project type.'
+    if (!form.budget) return 'Please select a budget range.'
+    if (!emailPattern.test(form.email.trim())) return 'Please enter a valid email address.'
+    return ''
+  }
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const validationError = validateForm()
+
+    if (validationError) {
+      setStatus('error')
+      setMessage(validationError)
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      const subject = `Project inquiry from ${form.company.trim()}`
+      const body = [
+        `Company / name: ${form.company.trim()}`,
+        `Project type: ${form.projectType}`,
+        `Budget: ${form.budget}`,
+        `Reply email: ${form.email.trim()}`,
+        '',
+        'Project notes:',
+      ].join('\n')
+      const mailto = `mailto:${CONTACT_CONTENT.email}?subject=${encodeURIComponent(
+        subject
+      )}&body=${encodeURIComponent(body)}`
+
+      window.location.href = mailto
+      setStatus('success')
+      setMessage('Your email draft is opening. Send it from your mail app to complete the inquiry.')
+    } catch {
+      setStatus('error')
+      setMessage(`Email draft could not open. Please write directly to ${CONTACT_CONTENT.email}.`)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <Section
       ref={containerRef}
@@ -88,12 +160,10 @@ export const Contact = () => {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Volumetric Atmosphere */}
       <div className="pointer-events-none absolute inset-0 z-0 opacity-40 mix-blend-screen">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--color-surface-elevated)_0%,_transparent_70%)]" />
       </div>
 
-      {/* Cursor Light */}
       {!isTouch && (
         <div
           className="pointer-events-none fixed z-0 rounded-full transition-opacity duration-700"
@@ -117,28 +187,61 @@ export const Contact = () => {
             </Title>
           </div>
 
-          <form ref={formRef} className="flex flex-col gap-16" onSubmit={(e) => e.preventDefault()}>
+          <form ref={formRef} className="flex flex-col gap-12" onSubmit={handleSubmit} noValidate>
+            <input
+              type="text"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={form.website}
+              onChange={(event) => updateField('website', event.target.value)}
+              className="hidden"
+              aria-hidden="true"
+            />
+
             <div className="text-text-secondary font-serif text-3xl leading-[1.6] italic md:text-5xl md:leading-[1.5] lg:text-6xl">
               <span className="form-reveal inline-block">Hi, we are </span>
+              <label className="sr-only" htmlFor="contact-company">
+                Company or name
+              </label>
               <input
+                id="contact-company"
+                name="company"
                 type="text"
                 placeholder="your company"
+                value={form.company}
+                onChange={(event) => updateField('company', event.target.value)}
                 className="form-reveal border-border text-text-primary placeholder:text-muted/30 focus:border-accent mx-2 inline-block w-[200px] border-b bg-transparent text-center font-sans font-medium not-italic transition-colors duration-300 focus:ring-0 focus:outline-none md:mx-4 md:w-[280px]"
                 required
+                aria-invalid={status === 'error' && !form.company.trim()}
+                aria-describedby="contact-status"
               />
               <span className="form-reveal inline-block">
                 , and we&apos;re looking for a partner to build{' '}
               </span>
               <div className="form-reveal relative mx-2 inline-block md:mx-4">
+                <label className="sr-only" htmlFor="contact-project-type">
+                  Project type
+                </label>
                 <select
-                  defaultValue=""
+                  id="contact-project-type"
+                  name="projectType"
+                  value={form.projectType}
+                  onChange={(event) => updateField('projectType', event.target.value)}
                   className="border-border text-text-primary focus:border-accent w-[220px] cursor-pointer appearance-none border-b bg-transparent text-center font-sans font-medium not-italic transition-colors duration-300 focus:outline-none md:w-[320px]"
+                  required
+                  aria-invalid={status === 'error' && !form.projectType}
+                  aria-describedby="contact-status"
                 >
                   <option value="" disabled>
                     select a project
                   </option>
-                  {CONTACT_CONTENT.form.types.map((type, i) => (
-                    <option key={i} value={type} className="bg-surface text-text-primary text-base">
+                  {CONTACT_CONTENT.form.types.map((type) => (
+                    <option
+                      key={type}
+                      value={type}
+                      className="bg-surface text-text-primary text-base"
+                    >
                       {type}
                     </option>
                   ))}
@@ -146,16 +249,25 @@ export const Contact = () => {
               </div>
               <span className="form-reveal inline-block">. Our budget is around </span>
               <div className="form-reveal relative mx-2 inline-block md:mx-4">
+                <label className="sr-only" htmlFor="contact-budget">
+                  Budget range
+                </label>
                 <select
-                  defaultValue=""
+                  id="contact-budget"
+                  name="budget"
+                  value={form.budget}
+                  onChange={(event) => updateField('budget', event.target.value)}
                   className="border-border text-text-primary focus:border-accent w-[180px] cursor-pointer appearance-none border-b bg-transparent text-center font-sans font-medium not-italic transition-colors duration-300 focus:outline-none md:w-[220px]"
+                  required
+                  aria-invalid={status === 'error' && !form.budget}
+                  aria-describedby="contact-status"
                 >
                   <option value="" disabled>
                     select budget
                   </option>
-                  {CONTACT_CONTENT.form.budgets.map((budget, i) => (
+                  {CONTACT_CONTENT.form.budgets.map((budget) => (
                     <option
-                      key={i}
+                      key={budget}
                       value={budget}
                       className="bg-surface text-text-primary text-base"
                     >
@@ -165,22 +277,43 @@ export const Contact = () => {
                 </select>
               </div>
               <span className="form-reveal inline-block">. You can reach me at </span>
+              <label className="sr-only" htmlFor="contact-email">
+                Email address
+              </label>
               <input
+                id="contact-email"
+                name="email"
                 type="email"
+                inputMode="email"
+                autoComplete="email"
                 placeholder="your email"
+                value={form.email}
+                onChange={(event) => updateField('email', event.target.value)}
                 className="form-reveal border-border text-text-primary placeholder:text-muted/30 focus:border-accent mx-2 inline-block w-[240px] border-b bg-transparent text-center font-sans font-medium not-italic transition-colors duration-300 focus:ring-0 focus:outline-none md:mx-4 md:w-[360px]"
                 required
+                aria-invalid={status === 'error' && !emailPattern.test(form.email.trim())}
+                aria-describedby="contact-status"
               />
               <span className="form-reveal inline-block"> to discuss details.</span>
+            </div>
+
+            <div
+              id="contact-status"
+              className="text-text-secondary form-reveal min-h-6 font-sans text-sm"
+              role="status"
+              aria-live="polite"
+            >
+              {message}
             </div>
 
             <div className="form-reveal flex justify-center md:justify-start">
               <button
                 type="submit"
-                className="group text-text-primary focus-visible:ring-accent flex items-center gap-4 rounded-sm py-4 font-sans text-xl font-medium outline-none focus-visible:ring-2 md:text-2xl"
+                disabled={isSubmitting}
+                className="group text-text-primary focus-visible:ring-accent disabled:text-muted flex items-center gap-4 rounded-sm py-4 font-sans text-xl font-medium transition-colors outline-none focus-visible:ring-2 disabled:cursor-not-allowed md:text-2xl"
               >
                 <span className="relative">
-                  Begin Project
+                  {isSubmitting ? 'Opening Draft' : 'Open Email Draft'}
                   <span className="bg-accent absolute -bottom-2 left-0 h-[2px] w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />
                 </span>
                 <ArrowRight

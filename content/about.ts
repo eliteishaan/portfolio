@@ -1,15 +1,15 @@
-export const ABOUT_CONTENT = {
+﻿export const ABOUT_CONTENT = {
   title: 'Digital Product Studio',
   subtitle: 'About the Studio',
   story: [
-    'We are a collective of engineers, designers, and strategists. We partner with founders and agencies to build premium digital products that scale effortlessly.',
-    "Our philosophy is simple: we merge rigorous engineering with high-end aesthetic execution. We don't just write code; we design architectures, orchestrate motion, and deliver results that drive business growth.",
+    'We build focused digital products with a small, senior team across strategy, interface design, engineering, motion, and launch readiness.',
+    'Our philosophy is simple: pair rigorous engineering with polished execution, keep scope honest, and ship maintainable systems that can keep improving after launch.',
   ],
   stats: [
-    { label: 'Founded', value: '2020' },
-    { label: 'Products Launched', value: '150+' },
-    { label: 'Enterprise Clients', value: '25' },
-    { label: 'Industry Awards', value: '12' },
+    { label: 'Focus', value: 'Product' },
+    { label: 'Mode', value: 'Build' },
+    { label: 'Motion', value: 'GSAP' },
+    { label: 'Stack', value: 'Next' },
   ],
   experience: [
     {
@@ -28,7 +28,7 @@ export const ABOUT_CONTENT = {
       year: 'Phase 03',
       role: 'Growth & Scaling',
       company: 'Evolution',
-      description: 'Continuous iteration and optimization for market success.',
+      description: 'Continuous iteration, measurement, and optimization after launch.',
     },
   ],
 }
