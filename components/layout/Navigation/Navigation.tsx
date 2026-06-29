@@ -20,12 +20,13 @@ export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
               href={item.href}
               variant="unstyled"
               className={cn(
-                'hover:text-text-primary focus-visible:ring-ring rounded-md text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
-                isActive ? 'text-text-primary' : 'text-text-secondary'
+                'focus-visible:ring-ring relative rounded-md px-3 py-2 text-sm font-medium transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
+                isActive ? 'text-text-primary' : 'text-text-secondary hover:text-text-primary'
               )}
               aria-current={isActive ? 'page' : undefined}
             >
               {item.label}
+              {/* Optional: Add a simple CSS active indicator here if desired */}
             </Link>
           )
         })}
