@@ -15,6 +15,10 @@ export const SmoothScrollProvider = ({ children }: { children: React.ReactNode }
   useEffect(() => {
     if (typeof window === 'undefined') return
 
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+
     if (lenisRef.current) {
       lenisRef.current.destroy()
       lenisRef.current = null

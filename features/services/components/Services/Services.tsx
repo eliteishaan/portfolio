@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 
 export const Services = () => {
   return (
-    <section id="services" className="bg-background relative w-full py-32 md:py-48">
+    <section id="services" className="bg-background relative w-full py-[clamp(6rem,15vw,12rem)]">
       <div className="mx-auto w-full max-w-[1600px] px-6 md:px-12">
         <GsapReveal>
           <div className="border-border/30 mb-24 flex flex-col gap-4 border-b pb-12">

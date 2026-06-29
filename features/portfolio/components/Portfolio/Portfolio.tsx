@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 export const Portfolio = () => {
   return (
-    <section id="work" className="bg-background relative z-20 w-full py-32 md:py-48">
+    <section id="work" className="bg-background relative z-20 w-full py-[clamp(6rem,15vw,12rem)]">
       {/* Section Header */}
       <div className="mx-auto mb-32 w-full max-w-[1600px] px-6 md:px-12">
         <h2 className={cn(TYPOGRAPHY.metadata, 'text-accent mb-4')}>02 // THE ARCHIVE</h2>

@@ -3,6 +3,7 @@
 import React, { useState, useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '@/lib/animation/gsap'
+import Image from 'next/image'
 
 export const ServicesMatrix = ({
   services,
@@ -11,6 +12,7 @@ export const ServicesMatrix = ({
 }) => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const cursorMediaRef = useRef<HTMLDivElement>(null)
+  const [failedImages, setFailedImages] = useState<Set<number>>(new Set())
 
   useGSAP(() => {
     if (typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches) return
@@ -58,12 +60,29 @@ export const ServicesMatrix = ({
         ref={cursorMediaRef}
         className={`bg-surface pointer-events-none fixed top-0 left-0 z-[100] h-[300px] w-[450px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-sm transition-opacity duration-300 md:h-[400px] md:w-[600px] ${hoveredIndex !== null ? 'opacity-100' : 'opacity-0'}`}
       >
-        {hoveredIndex !== null && services[hoveredIndex]?.image && (
-          <img
+        {hoveredIndex !== null &&
+        services[hoveredIndex]?.image &&
+        !failedImages.has(hoveredIndex) ? (
+          <Image
             src={services[hoveredIndex].image as string}
             alt="Service Artifact"
-            className="absolute inset-0 h-full w-full scale-105 object-cover"
+            fill
+            sizes="(max-width: 768px) 450px, 600px"
+            className="absolute inset-0 h-full w-full scale-105 object-cover object-center"
+            onError={() => {
+              const newSet = new Set(failedImages)
+              newSet.add(hoveredIndex)
+              setFailedImages(newSet)
+            }}
           />
+        ) : (
+          hoveredIndex !== null && (
+            <div className="bg-surface-elevated flex h-full w-full items-center justify-center">
+              <span className="text-muted font-mono text-xs tracking-widest uppercase">
+                Media Unavailable
+              </span>
+            </div>
+          )
         )}
       </div>
     </div>

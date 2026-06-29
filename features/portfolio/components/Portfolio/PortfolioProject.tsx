@@ -5,6 +5,8 @@ import { useGSAP } from '@gsap/react'
 import { gsap } from '@/lib/animation/gsap'
 import { TYPOGRAPHY } from '@/lib/design-tokens/typography'
 import { cn } from '@/lib/utils'
+import Image from 'next/image'
+import { useState } from 'react'
 
 export const PortfolioProject = ({
   project,
@@ -22,7 +24,8 @@ export const PortfolioProject = ({
   index: number
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const imageRef = useRef<HTMLImageElement>(null)
+  const imageRef = useRef<HTMLDivElement>(null)
+  const [imgError, setImgError] = useState(false)
 
   useGSAP(
     () => {
@@ -63,14 +66,28 @@ export const PortfolioProject = ({
           isEven ? 'md:order-1' : 'md:order-2'
         )}
       >
-        <img
-          ref={imageRef}
-          src={project.image as string}
-          alt={project.title as string}
-          className="absolute inset-0 h-full w-full object-cover"
-        />
+        <div ref={imageRef} className="absolute inset-0 h-full w-full">
+          {!imgError ? (
+            <Image
+              src={project.image as string}
+              alt={project.title as string}
+              fill
+              className="object-cover object-center"
+              sizes="(max-width: 768px) 100vw, 66vw"
+              priority={index < 2}
+              onError={() => setImgError(true)}
+              onLoadingComplete={() => ScrollTrigger.refresh()}
+            />
+          ) : (
+            <div className="bg-surface-elevated flex h-full w-full items-center justify-center">
+              <span className="text-muted font-mono text-xs tracking-widest uppercase">
+                Media Unavailable
+              </span>
+            </div>
+          )}
+        </div>
         {/* Inner Shadow for premium depth */}
-        <div className="absolute inset-0 bg-black/10 ring-1 ring-white/10 ring-inset" />
+        <div className="pointer-events-none absolute inset-0 bg-black/10 ring-1 ring-white/10 ring-inset" />
       </div>
 
       {/* Project Metadata & overlapping Title */}
@@ -88,7 +105,7 @@ export const PortfolioProject = ({
         <h3
           className={cn(
             TYPOGRAPHY.display,
-            'mb-8 text-[8vw] leading-[0.9] md:text-[6vw]',
+            'mb-8 text-[clamp(2.5rem,8vw,6rem)] leading-[0.9]',
             isEven ? 'md:-ml-[10vw]' : 'z-20 mix-blend-difference md:-mr-[10vw]'
           )}
         >
