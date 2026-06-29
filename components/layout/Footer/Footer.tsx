@@ -1,38 +1,106 @@
+'use client'
+
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { type FooterProps } from './Footer.types'
-import { Container } from '@/components/ui/Container'
-import { Divider } from '@/components/ui/Divider'
-import { Stack } from '@/components/ui/Stack'
-import { Grid } from '@/components/ui/Grid'
+import { Container, Stack, Grid, Body, Caption, Title } from '@/components/ui'
+import { CONTACT_CONTENT } from '@/content/contact'
 
-export const Footer = React.forwardRef<HTMLElement, FooterProps>(
-  (
-    {
-      className,
-      navigationSlot = <div>[Navigation Placeholder]</div>,
-      socialsSlot = <div>[Socials Placeholder]</div>,
-      copyrightSlot = <div>© {new Date().getFullYear()} Portfolio. All rights reserved.</div>,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <footer ref={ref} className={cn('bg-background w-full', className)} {...props}>
-        <Container maxWidth="xl" className="py-12">
-          <Stack gap={32}>
-            <Grid cols={3} gap={32}>
-              <div className="col-span-1">{socialsSlot}</div>
-              <div className="col-span-1 sm:col-span-2">{navigationSlot}</div>
-            </Grid>
-            <Divider />
-            <div className="text-text-secondary flex items-center justify-between text-sm">
-              {copyrightSlot}
+export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, ...props }, ref) => {
+  // Current time updater
+  const [time, setTime] = React.useState<string>('')
+  React.useEffect(() => {
+    const updateTime = () => {
+      setTime(
+        new Date().toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'America/New_York',
+        }) + ' EST'
+      )
+    }
+    updateTime()
+    const interval = setInterval(updateTime, 10000)
+    return () => clearInterval(interval)
+  }, [])
+
+  return (
+    <footer
+      ref={ref}
+      className={cn(
+        'bg-background border-border/30 relative w-full overflow-hidden border-t pt-24 pb-12',
+        className
+      )}
+      {...props}
+    >
+      <Container maxWidth="7xl" className="relative z-10">
+        <Stack gap="xl">
+          <Grid cols={1} className="gap-12 md:grid-cols-12">
+            {/* Left: Status & Local Time */}
+            <div className="flex flex-col gap-6 md:col-span-4">
+              <Stack gap="sm">
+                <Caption className="text-muted tracking-widest uppercase">Status</Caption>
+                <Body className="text-text-secondary">{CONTACT_CONTENT.status}</Body>
+              </Stack>
+              <Stack gap="sm">
+                <Caption className="text-muted tracking-widest uppercase">Local Time</Caption>
+                <Body className="text-text-secondary font-mono">{time || '—'}</Body>
+              </Stack>
             </div>
-          </Stack>
-        </Container>
-      </footer>
-    )
-  }
-)
+
+            {/* Middle: Socials */}
+            <div className="flex flex-col gap-6 md:col-span-4">
+              <Caption className="text-muted tracking-widest uppercase">Connect</Caption>
+              <ul className="flex flex-col gap-3">
+                {CONTACT_CONTENT.socials.map((social, i) => (
+                  <li key={i}>
+                    <a
+                      href={social.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-text-secondary hover:text-accent font-medium transition-colors duration-300"
+                    >
+                      {social.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Right: Direct Contact */}
+            <div className="flex flex-col gap-6 md:col-span-4">
+              <Caption className="text-muted tracking-widest uppercase">Inquiries</Caption>
+              <a
+                href={`mailto:${CONTACT_CONTENT.email}`}
+                className="text-text-primary hover:text-accent text-xl font-medium transition-colors duration-300"
+              >
+                {CONTACT_CONTENT.email}
+              </a>
+            </div>
+          </Grid>
+
+          {/* Giant Watermark */}
+          <div className="pointer-events-none mt-12 flex w-full items-center justify-center select-none md:mt-24">
+            <span
+              className="text-text-primary font-serif font-bold italic opacity-[0.03]"
+              style={{
+                fontSize: 'clamp(4rem, 15vw, 16rem)',
+                lineHeight: 0.8,
+                letterSpacing: '-0.02em',
+              }}
+            >
+              STUDIO
+            </span>
+          </div>
+
+          {/* Copyright */}
+          <div className="text-text-secondary mt-8 flex flex-col items-center justify-between font-mono text-sm sm:flex-row">
+            <span>© {new Date().getFullYear()} Nexus Studio.</span>
+            <span>All rights reserved.</span>
+          </div>
+        </Stack>
+      </Container>
+    </footer>
+  )
+})
 Footer.displayName = 'Footer'

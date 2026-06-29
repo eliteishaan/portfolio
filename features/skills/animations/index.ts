@@ -11,7 +11,7 @@ export const runSkillsEntrance = (container: HTMLElement, groups: HTMLElement[])
   tl.fromTo(
     groups,
     { opacity: 0, x: -20 },
-    { opacity: 1, x: 0, duration: 0.6, stagger: 0.05, ease: 'power1.out' }
+    { opacity: 1, x: 0, duration: 1.0, stagger: 0.05, ease: 'expo.out' }
   )
 
   return tl

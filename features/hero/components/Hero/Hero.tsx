@@ -2,8 +2,8 @@
 
 import React, { useRef, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
-import { useGSAP } from '@gsap/react'
-import { gsap } from '@/lib/animation/gsap'
+import SplitType from 'split-type'
+import { gsap, useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
 import { runHeroEntrance, runHeroScrollChoreography } from '@/lib/animation/timelines'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { BlueprintLines } from '../BlueprintLines'
@@ -48,10 +48,13 @@ export const Hero = () => {
       const lines = gsap.utils.toArray<SVGGElement>('.hero-line', linesRef.current)
 
       if (nameRef.current && roleRef.current && ctaRef.current && indicatorRef.current) {
+        const nameSplit = new SplitType(nameRef.current, { types: 'chars' })
+        const roleSplit = new SplitType(roleRef.current, { types: 'words' })
+
         runHeroEntrance(
           lines,
-          nameRef.current,
-          roleRef.current,
+          nameSplit.chars,
+          roleSplit.words,
           ctaRef.current,
           indicatorRef.current
         )

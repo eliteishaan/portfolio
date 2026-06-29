@@ -2,8 +2,8 @@ import { gsap } from './gsap'
 
 export const runHeroEntrance = (
   lines: SVGGElement[],
-  name: HTMLElement,
-  role: HTMLElement,
+  nameChars: HTMLElement[] | null,
+  roleWords: HTMLElement[] | null,
   cta: HTMLElement,
   scrollIndicator: HTMLElement
 ) => {
@@ -17,8 +17,8 @@ export const runHeroEntrance = (
     }
   })
 
-  gsap.set(name, { opacity: 0, y: 20 })
-  gsap.set(role, { clipPath: 'inset(0 100% 0 0)' })
+  if (nameChars) gsap.set(nameChars, { opacity: 0, y: 40, rotateX: -30 })
+  if (roleWords) gsap.set(roleWords, { opacity: 0, y: 20 })
   gsap.set([cta, scrollIndicator], { opacity: 0 })
 
   // Draw lines
@@ -34,27 +34,35 @@ export const runHeroEntrance = (
   )
 
   // Name reveal
-  tl.to(
-    name,
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power2.out',
-    },
-    1.8
-  )
+  if (nameChars) {
+    tl.to(
+      nameChars,
+      {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        duration: 1.4,
+        stagger: 0.05,
+        ease: 'expo.out',
+      },
+      1.5
+    )
+  }
 
   // Role reveal
-  tl.to(
-    role,
-    {
-      clipPath: 'inset(0 0% 0 0)',
-      duration: 0.6,
-      ease: 'power2.inOut',
-    },
-    2.4
-  )
+  if (roleWords) {
+    tl.to(
+      roleWords,
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        stagger: 0.04,
+        ease: 'expo.out',
+      },
+      2.0
+    )
+  }
 
   // CTA & Indicator
   tl.to(

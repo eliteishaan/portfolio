@@ -11,7 +11,7 @@ export const runServicesEntrance = (container: HTMLElement, cards: HTMLElement[]
   tl.fromTo(
     cards,
     { opacity: 0, scale: 0.9, y: 20 },
-    { opacity: 1, scale: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'back.out(1.7)' }
+    { opacity: 1, scale: 1, y: 0, duration: 1.2, stagger: 0.05, ease: 'expo.out' }
   )
 
   return tl

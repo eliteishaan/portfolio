@@ -1,8 +1,7 @@
 'use client'
 
 import React, { useRef } from 'react'
-import { useGSAP } from '@gsap/react'
-import { gsap } from '@/lib/animation/gsap'
+import { gsap, useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
 import { runSkillsEntrance } from '../../animations'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { Section, Container, Grid, Stack, H2, Title } from '@/components/ui'

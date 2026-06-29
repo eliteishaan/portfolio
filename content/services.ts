@@ -1,35 +1,75 @@
-import { Code2, MonitorPlay, Component, Lightbulb } from 'lucide-react'
+import {
+  Monitor,
+  Cloud,
+  Brain,
+  Bot,
+  Zap,
+  PenTool,
+  MonitorPlay,
+  Video,
+  Lightbulb,
+} from 'lucide-react'
 
 export const SERVICES_CONTENT = {
-  title: 'Capabilities',
+  title: 'What We Do',
   subtitle: 'Services',
   items: [
     {
-      id: 'frontend',
-      title: 'Frontend Architecture',
+      id: 'web-apps',
+      title: 'Web Applications',
       description:
-        'Designing scalable, performant React applications with modern state management, routing, and SSR strategies.',
-      icon: Code2,
+        'Scalable, performant web platforms built for enterprise and high-growth startups.',
+      icon: Monitor,
+    },
+    {
+      id: 'saas',
+      title: 'SaaS Development',
+      description:
+        'End-to-end product development, from multi-tenant architecture to billing integration.',
+      icon: Cloud,
+    },
+    {
+      id: 'ai-solutions',
+      title: 'AI Solutions',
+      description: 'Integrating LLMs, RAG, and custom models to supercharge product capabilities.',
+      icon: Brain,
+    },
+    {
+      id: 'ai-agents',
+      title: 'AI Agents',
+      description: 'Autonomous agentic workflows to automate complex business processes.',
+      icon: Bot,
+    },
+    {
+      id: 'automation',
+      title: 'Automation',
+      description: 'Connecting internal systems and automating operations for maximum efficiency.',
+      icon: Zap,
+    },
+    {
+      id: 'ui-ux',
+      title: 'UI/UX Design',
+      description: 'Premium interface design focusing on user conversion, retention, and delight.',
+      icon: PenTool,
     },
     {
       id: 'motion',
-      title: 'Motion Engineering',
-      description:
-        'Orchestrating complex GSAP timelines and WebGL shaders to create cinematic, award-winning web experiences.',
+      title: 'Motion Design',
+      description: 'Cinematic web experiences using GSAP and WebGL to elevate brand perception.',
       icon: MonitorPlay,
     },
     {
-      id: 'design-systems',
-      title: 'Design Systems',
+      id: 'ai-video',
+      title: 'AI Video Production',
       description:
-        'Bridging design and engineering by building robust, accessible UI primitive libraries and token architectures.',
-      icon: Component,
+        'Cutting-edge generative video for marketing campaigns and product storytelling.',
+      icon: Video,
     },
     {
       id: 'strategy',
-      title: 'Technical Strategy',
+      title: 'Creative Strategy',
       description:
-        'Advising startups and agencies on tech stack selection, performance optimization, and architectural decisions.',
+        'Aligning business objectives with technical feasibility and market positioning.',
       icon: Lightbulb,
     },
   ],

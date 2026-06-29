@@ -11,7 +11,7 @@ export const runTestimonialsEntrance = (container: HTMLElement, elements: HTMLEl
   tl.fromTo(
     elements,
     { opacity: 0, clipPath: 'inset(0 100% 0 0)' },
-    { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 1.0, stagger: 0.2, ease: 'power3.inOut' }
+    { opacity: 1, clipPath: 'inset(0 0% 0 0)', duration: 1.0, stagger: 0.2, ease: 'expo.inOut' }
   )
 
   return tl

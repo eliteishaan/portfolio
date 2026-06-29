@@ -1,27 +1,30 @@
 export const TESTIMONIALS_CONTENT = {
-  title: 'Client Perspectives',
+  title: 'Client Results',
   subtitle: 'Testimonials',
   items: [
     {
       id: 't1',
       quote:
-        'The rare engineer who genuinely understands design. The attention to detail in motion and typography elevated our entire brand.',
+        "Nexus Studio completely transformed our product architecture. Their team shipped faster and with higher quality than any agency we've ever hired.",
       author: 'Sarah Jenkins',
-      role: 'Creative Director, Studio X',
+      role: 'CEO, TechCorp',
+      company: 'TechCorp',
     },
     {
       id: 't2',
       quote:
-        'Delivered a highly complex web application ahead of schedule. The architecture is so clean our junior devs were able to onboard in days.',
-      author: 'Marcus Chen',
-      role: 'CTO, NextFin',
+        'The AI integration they built for us reduced our operational overhead by 40%. They are not just engineers; they are true product strategists.',
+      author: 'Michael Chen',
+      role: 'Founder, HealthAI',
+      company: 'HealthAI',
     },
     {
       id: 't3',
       quote:
-        "I've never seen someone orchestrate GSAP and React so flawlessly. The site performance is perfect even on low-end devices.",
+        'Their motion design and UI execution is world-class. Our conversion rates doubled after the redesign they implemented.',
       author: 'Elena Rodriguez',
-      role: 'Founder, Aether',
+      role: 'VP Product, Global Retail',
+      company: 'Global Retail',
     },
   ],
 }

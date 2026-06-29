@@ -1,22 +1,11 @@
 export const SKILLS_CONTENT = {
-  title: 'Technical Arsenal',
-  subtitle: 'Skills',
+  title: 'Our Arsenal',
+  subtitle: 'Capabilities',
   groups: [
-    {
-      title: 'Frontend',
-      skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Zustand'],
-    },
-    {
-      title: 'Motion & 3D',
-      skills: ['GSAP', 'Framer Motion', 'Three.js', 'React Three Fiber', 'GLSL'],
-    },
-    {
-      title: 'Architecture',
-      skills: ['Design Systems', 'Monorepos', 'Performance', 'Accessibility'],
-    },
-    {
-      title: 'Backend & Cloud',
-      skills: ['Node.js', 'Firebase', 'PostgreSQL', 'Vercel', 'AWS'],
-    },
+    { title: 'Development', skills: ['React', 'Next.js', 'TypeScript', 'Node.js', 'Python'] },
+    { title: 'AI', skills: ['LLMs', 'RAG', 'Agentic Workflows', 'Vector DBs', 'OpenAI'] },
+    { title: 'Automation', skills: ['Make', 'Zapier', 'n8n', 'Custom Integrations', 'Webhooks'] },
+    { title: 'Creative', skills: ['Figma', 'UI/UX', 'GSAP', 'WebGL', 'Motion Design'] },
+    { title: 'Infrastructure', skills: ['AWS', 'Vercel', 'PostgreSQL', 'Redis', 'Docker'] },
   ],
 }

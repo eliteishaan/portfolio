@@ -11,7 +11,7 @@ export const runAboutEntrance = (container: HTMLElement, elements: HTMLElement[]
   tl.fromTo(
     elements,
     { opacity: 0, y: 30 },
-    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out' }
+    { opacity: 1, y: 0, duration: 1.2, stagger: 0.1, ease: 'expo.out' }
   )
 
   return tl
