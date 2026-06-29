@@ -3,7 +3,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import SplitType from 'split-type'
-import { gsap, useGSAP } from '@/lib/animation/gsap'
+import { gsap, useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
 import { runHeroEntrance, runHeroScrollChoreography } from '@/lib/animation/timelines'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { BlueprintLines } from '../BlueprintLines'
@@ -91,6 +91,7 @@ export const Hero = () => {
 
   return (
     <section
+      id="hero"
       ref={containerRef}
       className="bg-background relative flex h-[100vh] w-full flex-col items-center justify-center overflow-hidden"
     >

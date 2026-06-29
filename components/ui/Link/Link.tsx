@@ -19,7 +19,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
       if (isHashLink && lenis) {
         e.preventDefault()
         // Pass the scroll command directly to Lenis
-        lenis.scrollTo(href as string, { duration: 1.2 })
+        lenis.scrollTo(href as string, {
+          duration: 1.5,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        })
       }
       if (onClick) onClick(e)
     }
