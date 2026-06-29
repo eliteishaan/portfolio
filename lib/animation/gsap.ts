@@ -1,10 +1,11 @@
-import gsap from 'gsap'
+import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
+import { CustomEase } from 'gsap/CustomEase'
 
-// Idempotent registration to prevent warnings in Strict Mode/HMR
 if (typeof window !== 'undefined') {
-  gsap.registerPlugin(ScrollTrigger, useGSAP)
+  gsap.registerPlugin(ScrollTrigger, useGSAP, CustomEase)
+  CustomEase.create('spring', 'M0,0 C0.1,0.9 0.2,1 1,1')
 }
 
-export { gsap, ScrollTrigger, useGSAP }
+export { gsap, ScrollTrigger, useGSAP, CustomEase }

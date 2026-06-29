@@ -1,6 +1,8 @@
-﻿import type { Metadata } from 'next'
+import type { Metadata } from 'next'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider'
+import { WebGLProvider } from '@/components/providers/WebGLProvider'
+import { Preloader } from '@/components/ui/Preloader/Preloader'
 import { MainLayout } from '@/components/layout'
 import { SITE_CONFIG } from '@/lib/constants/site'
 import './globals.css'
@@ -71,7 +73,10 @@ export default function RootLayout({
         />
         <ThemeProvider attribute="class" defaultTheme="system">
           <SmoothScrollProvider>
-            <MainLayout>{children}</MainLayout>
+            <WebGLProvider>
+              <Preloader />
+              <MainLayout>{children}</MainLayout>
+            </WebGLProvider>
           </SmoothScrollProvider>
         </ThemeProvider>
       </body>

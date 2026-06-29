@@ -1,111 +1,59 @@
-'use client'
-
-import React, { useRef } from 'react'
-import { gsap, useGSAP } from '@/lib/animation/gsap'
-import { runAboutEntrance } from '../../animations'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { Section, Container, Grid, Stack, H2, Body, BodyLarge, Title } from '@/components/ui'
+import React from 'react'
+import { GsapReveal } from '@/components/animation/GsapReveal'
 import { ABOUT_CONTENT } from '@/content/about'
+import { TYPOGRAPHY } from '@/lib/design-tokens/typography'
+import { cn } from '@/lib/utils'
 
 export const About = () => {
-  const containerRef = useRef<HTMLElement>(null)
-  const prefersReducedMotion = useReducedMotion()
-
-  useGSAP(
-    () => {
-      if (prefersReducedMotion || !containerRef.current) return
-      const elements = gsap.utils.toArray<HTMLElement>('.about-animate', containerRef.current)
-      runAboutEntrance(containerRef.current, elements)
-    },
-    { scope: containerRef, dependencies: [prefersReducedMotion] }
-  )
-
   return (
-    <Section ref={containerRef} id="about" className="bg-surface" spacing="lg">
-      <Container>
-        <Grid cols={1} className="gap-12 md:gap-8 lg:grid-cols-12">
-          {/* Header Area */}
-          <div
-            className="about-animate lg:col-span-4"
-            style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-          >
-            <Stack gap="sm">
-              <Title className="text-accent text-sm tracking-widest uppercase">
-                {ABOUT_CONTENT.subtitle}
-              </Title>
-              <H2 className="text-text-primary leading-tight tracking-tight">
+    <section id="about" className="bg-background relative w-full overflow-hidden py-32 md:py-48">
+      {/* Volumetric Amber Lighting */}
+      <div className="pointer-events-none absolute top-1/2 left-1/2 z-0 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 opacity-20 mix-blend-screen">
+        <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,_var(--color-accent)_0%,_transparent_70%)] blur-3xl" />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-[1600px] px-6 md:px-12">
+        <div className="flex flex-col justify-between gap-24 lg:flex-row lg:items-end lg:gap-12">
+          {/* Asymmetric Left: Massive Bleeding Typography */}
+          <div className="relative w-full lg:w-3/5">
+            <GsapReveal>
+              <h2 className={cn(TYPOGRAPHY.display, '-ml-[2vw] whitespace-nowrap')}>
                 {ABOUT_CONTENT.title}
-              </H2>
-            </Stack>
+              </h2>
+            </GsapReveal>
+            <GsapReveal delay={0.1}>
+              <div className={cn(TYPOGRAPHY.metadata, 'mt-4 md:ml-[2vw]')}>
+                {ABOUT_CONTENT.subtitle} — EST. 2026
+              </div>
+            </GsapReveal>
           </div>
 
-          {/* Content Area */}
-          <div className="lg:col-span-8">
-            <Stack gap="xl">
-              <Stack
-                gap="md"
-                className="about-animate"
-                style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-              >
-                {ABOUT_CONTENT.story.map((p, i) => (
-                  <BodyLarge
-                    key={i}
-                    className={i === 0 ? 'text-text-primary' : 'text-text-secondary'}
-                  >
-                    {p}
-                  </BodyLarge>
-                ))}
-              </Stack>
+          {/* Asymmetric Right: Dense Manifesto Block */}
+          <div className="w-full lg:w-1/3 lg:pb-[2vw]">
+            <div className="border-border/30 flex flex-col gap-8 border-l pl-8">
+              {ABOUT_CONTENT.story.map((paragraph, i) => (
+                <GsapReveal key={i} delay={0.1 * i}>
+                  <p className={TYPOGRAPHY.manifesto}>{paragraph}</p>
+                </GsapReveal>
+              ))}
 
-              {/* Stats Grid */}
-              <Grid
-                cols={2}
-                className="about-animate gap-6 sm:grid-cols-4"
-                style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-              >
+              {/* Stats Matrix */}
+              <div className="mt-8 grid grid-cols-2 gap-8">
                 {ABOUT_CONTENT.stats.map((stat, i) => (
-                  <Stack key={i} gap="none">
-                    <Title className="text-text-primary font-serif text-3xl italic">
-                      {stat.value}
-                    </Title>
-                    <Body className="text-text-secondary text-sm tracking-wider uppercase">
-                      {stat.label}
-                    </Body>
-                  </Stack>
-                ))}
-              </Grid>
-
-              {/* Experience Timeline */}
-              <Stack
-                gap="lg"
-                className="before:bg-border relative mt-8 before:absolute before:inset-0 before:ml-[1px] before:h-full before:w-[1px] before:-translate-x-px before:opacity-50 md:before:mx-auto md:before:translate-x-0"
-              >
-                {ABOUT_CONTENT.experience.map((exp, i) => (
-                  <div
-                    key={i}
-                    className="group is-active about-animate relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse"
-                    style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-                  >
-                    <div className="border-accent bg-surface absolute left-[-5px] flex h-3 w-3 shrink-0 items-center justify-center rounded-full border shadow md:left-1/2 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2" />
-                    <div className="border-border bg-background hover:border-text-secondary ml-8 w-[calc(100%-2rem)] rounded-lg border p-6 transition-colors md:ml-0 md:w-[calc(50%-2rem)]">
-                      <Stack gap="xs">
-                        <span className="text-accent font-mono text-xs">{exp.year}</span>
-                        <Title>{exp.role}</Title>
-                        <Body className="text-text-secondary">{exp.company}</Body>
-                        {exp.description && (
-                          <Body className="text-text-secondary mt-2 text-sm">
-                            {exp.description}
-                          </Body>
-                        )}
-                      </Stack>
+                  <GsapReveal key={`stat-${i}`} delay={0.2 + 0.1 * i}>
+                    <div className="flex flex-col gap-1">
+                      <span className="text-text-primary font-serif text-3xl italic">
+                        {stat.value}
+                      </span>
+                      <span className={TYPOGRAPHY.metadata}>{stat.label}</span>
                     </div>
-                  </div>
+                  </GsapReveal>
                 ))}
-              </Stack>
-            </Stack>
+              </div>
+            </div>
           </div>
-        </Grid>
-      </Container>
-    </Section>
+        </div>
+      </div>
+    </section>
   )
 }
