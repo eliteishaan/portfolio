@@ -105,6 +105,8 @@
   --radius-xl: var(--radius-xl);
   --radius-2xl: var(--radius-2xl);
   --radius-3xl: var(--radius-3xl);
+
+  --ease-spring: cubic-bezier(0.1, 0.9, 0.2, 1);
 }
 
 @layer base {

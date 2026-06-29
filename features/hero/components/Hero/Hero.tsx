@@ -1,161 +1,37 @@
-'use client'
-
-import React, { useRef, useEffect, useState } from 'react'
-import dynamic from 'next/dynamic'
-import SplitType from 'split-type'
-import { gsap, useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
-import { runHeroEntrance, runHeroScrollChoreography } from '@/lib/animation/timelines'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { BlueprintLines } from '../BlueprintLines'
-import { CursorLight } from '../CursorLight'
-import { Display, BodyLarge } from '@/components/ui/Typography'
-import { HERO_CONTENT } from '@/content/hero'
-import { Link } from '@/components/ui/Link'
-import { getGPUTier } from 'detect-gpu'
-
-const HeroNoiseScene = dynamic(() => import('@/components/three/HeroNoiseScene'), {
-  ssr: false,
-})
+import React from 'react'
+import { View } from '@react-three/drei'
+import { ReactiveMeshScene } from '@/components/three/ReactiveMeshScene'
+import { GsapReveal } from '@/components/animation/GsapReveal'
+import { TYPOGRAPHY } from '@/lib/design-tokens/typography'
+import { cn } from '@/lib/utils'
 
 export const Hero = () => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const linesRef = useRef<SVGSVGElement>(null)
-  const nameRef = useRef<HTMLHeadingElement>(null)
-  const roleRef = useRef<HTMLParagraphElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
-  const indicatorRef = useRef<HTMLDivElement>(null)
-  const lightContainerRef = useRef<HTMLDivElement>(null)
-
-  const prefersReducedMotion = useReducedMotion()
-  const [gpuTier, setGpuTier] = useState<number>(3)
-
-  useEffect(() => {
-    const checkGPU = async () => {
-      try {
-        const tier = await getGPUTier()
-        setGpuTier(tier.tier)
-      } catch {
-        setGpuTier(1) // Fallback to low tier on error
-      }
-    }
-    checkGPU()
-  }, [])
-
-  useGSAP(
-    () => {
-      if (prefersReducedMotion) return
-
-      const lines = gsap.utils.toArray<SVGGElement>('.hero-line', linesRef.current)
-      let nameSplit: SplitType | null = null
-      let roleSplit: SplitType | null = null
-
-      // Wait for fonts to avoid character overlapping
-      document.fonts.ready.then(() => {
-        if (nameRef.current && roleRef.current && ctaRef.current && indicatorRef.current) {
-          nameSplit = new SplitType(nameRef.current, { types: 'chars' })
-          roleSplit = new SplitType(roleRef.current, { types: 'words' })
-
-          runHeroEntrance(
-            lines,
-            nameSplit.chars,
-            roleSplit.words,
-            ctaRef.current,
-            indicatorRef.current
-          )
-        }
-
-        // Force GSAP to recalculate heights after fonts are ready
-        ScrollTrigger.refresh()
-      })
-
-      if (containerRef.current && nameRef.current && ctaRef.current && lightContainerRef.current) {
-        runHeroScrollChoreography(
-          containerRef.current,
-          nameRef.current,
-          lines,
-          ctaRef.current,
-          lightContainerRef.current
-        )
-      }
-
-      return () => {
-        nameSplit?.revert()
-        roleSplit?.revert()
-      }
-    },
-    { scope: containerRef, dependencies: [prefersReducedMotion] }
-  )
-
-  // WebGL is enabled for mid-to-high end GPUs only
-  const showWebGL = gpuTier !== null && gpuTier > 1
-
   return (
     <section
       id="hero"
-      ref={containerRef}
-      className="bg-background relative flex h-[100vh] w-full flex-col items-center justify-center overflow-hidden"
+      className="bg-background relative flex h-[100svh] w-full items-center justify-center overflow-hidden"
     >
-      {/* 3D or Fallback Layer */}
-      {showWebGL && !prefersReducedMotion ? (
-        <HeroNoiseScene />
-      ) : (
-        <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(ellipse_at_center,_var(--color-surface)_0%,_var(--color-background)_100%)] opacity-30" />
-      )}
-
-      <div ref={lightContainerRef}>
-        <CursorLight />
+      {/* 3D Tunneling Portal */}
+      <div className="absolute inset-0 z-0">
+        <View className="h-full w-full">
+          <ReactiveMeshScene />
+        </View>
       </div>
 
-      <BlueprintLines ref={linesRef} />
-
-      {/* Name and Role */}
-      <div className="relative z-20 flex w-full max-w-7xl flex-col px-6 md:px-12">
-        <div className="relative flex flex-col items-center justify-center">
-          <Display
-            as="h1"
-            ref={nameRef}
-            className="text-text-primary text-[12vw] leading-none tracking-tighter italic md:text-[14vw]"
-            style={{ opacity: prefersReducedMotion ? 1 : 0 }}
+      <div className="relative z-10 w-full px-6 md:px-12">
+        {/* Massive Screen-Bleeding Typography */}
+        <GsapReveal delay={0.5}>
+          <h1
+            className={cn(
+              TYPOGRAPHY.display,
+              'text-[16vw] leading-[0.8] mix-blend-difference md:text-[14vw]'
+            )}
           >
-            {HERO_CONTENT.name}
-          </Display>
-
-          <BodyLarge
-            as="p"
-            ref={roleRef}
-            className="text-text-secondary mt-4 w-full text-center font-sans text-sm font-light tracking-[0.3em] uppercase md:pl-[2vw] md:text-left md:text-lg"
-          >
-            {HERO_CONTENT.role}
-          </BodyLarge>
-        </div>
-      </div>
-
-      {/* CTA Bottom Right */}
-      <div
-        ref={ctaRef}
-        className="absolute right-6 bottom-12 z-20 md:right-12"
-        style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-      >
-        <Link
-          href="#work"
-          variant="unstyled"
-          className="group text-text-primary relative inline-flex text-sm font-medium tracking-wide md:text-base"
-        >
-          {HERO_CONTENT.cta}
-          <span className="bg-accent absolute -bottom-1 left-0 h-[1px] w-full transition-all duration-300 group-hover:h-[2px] group-hover:w-[108%]" />
-        </Link>
-      </div>
-
-      {/* Scroll Indicator Bottom Center */}
-      <div
-        ref={indicatorRef}
-        className="absolute bottom-12 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-2"
-        style={{ opacity: prefersReducedMotion ? 1 : 0 }}
-        aria-hidden="true"
-      >
-        <div className="bg-border relative h-12 w-[1px] overflow-hidden">
-          <div className="bg-text-primary absolute top-0 left-0 h-1/2 w-full animate-bounce" />
-        </div>
+            DIGITAL
+            <br />
+            <span className="text-accent italic">STUDIO</span>
+          </h1>
+        </GsapReveal>
       </div>
     </section>
   )
