@@ -1,162 +1,112 @@
-﻿'use client'
-import { gsap, useGSAP } from '@/lib/animation/gsap'
+'use client'
 
 import React, { useRef } from 'react'
-import Image from 'next/image'
-import { runProjectIllumination } from '../../animations'
-import { Link, Stack, Title, Body, Caption } from '@/components/ui'
-import { type Project } from '@/content/projects'
-import { ArrowRight } from 'lucide-react'
-import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { useGSAP } from '@gsap/react'
+import { gsap } from '@/lib/animation/gsap'
+import { TYPOGRAPHY } from '@/lib/design-tokens/typography'
 import { cn } from '@/lib/utils'
 
-export const PortfolioProject = ({ project, index }: { project: Project; index: number }) => {
+export const PortfolioProject = ({
+  project,
+  index,
+}: {
+  project: {
+    category?: string
+    year?: string
+    title?: string
+    description?: string
+    link?: string
+    image?: string
+    [key: string]: unknown
+  }
+  index: number
+}) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const backlightRef = useRef<HTMLDivElement>(null)
-  const borderRef = useRef<HTMLDivElement>(null)
-  const imageRef = useRef<HTMLDivElement>(null)
-  const numberRef = useRef<HTMLDivElement>(null)
-  const contentWrapperRef = useRef<HTMLDivElement>(null)
-
-  const prefersReducedMotion = useReducedMotion()
+  const imageRef = useRef<HTMLImageElement>(null)
 
   useGSAP(
     () => {
-      if (prefersReducedMotion) {
-        gsap.set([backlightRef.current, imageRef.current], { opacity: 1 })
-        gsap.set(borderRef.current, { borderColor: 'var(--color-accent-dim)' })
-        gsap.set(numberRef.current, { opacity: 0.04 })
-        if (contentWrapperRef.current) {
-          gsap.set(contentWrapperRef.current.children, { opacity: 1, y: 0 })
-        }
-        return
-      }
-
-      if (
-        containerRef.current &&
-        backlightRef.current &&
-        borderRef.current &&
-        imageRef.current &&
-        numberRef.current &&
-        contentWrapperRef.current
-      ) {
-        runProjectIllumination(
-          containerRef.current,
-          backlightRef.current,
-          borderRef.current,
+      // Cinematic Parallax Image Effect
+      if (imageRef.current) {
+        gsap.fromTo(
           imageRef.current,
-          numberRef.current,
-          contentWrapperRef.current
+          { scale: 1.2, yPercent: -10 },
+          {
+            scale: 1,
+            yPercent: 10,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: containerRef.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
+          }
         )
       }
     },
-    { scope: containerRef, dependencies: [prefersReducedMotion] }
+    { scope: containerRef }
   )
 
-  const isLeft = project.align === 'left'
+  // Alternate layout direction based on odd/even index
+  const isEven = index % 2 === 0
 
   return (
-    <article
+    <div
       ref={containerRef}
-      className="group/project relative mx-auto flex w-full max-w-[1100px] flex-col"
-      aria-labelledby={`project-title-${project.id}`}
+      className="relative mx-auto flex w-full max-w-[1600px] flex-col items-center gap-12 px-6 md:flex-row md:gap-24 md:px-12"
     >
+      {/* Massive Overlapping Image */}
       <div
         className={cn(
-          'absolute top-1/2 hidden -translate-y-1/2 flex-col opacity-0 transition-opacity duration-700 group-hover/project:opacity-100 xl:flex',
-          isLeft ? '-right-48 items-start' : '-left-48 items-end'
+          'relative aspect-[4/3] w-full overflow-hidden rounded-sm md:w-2/3',
+          isEven ? 'md:order-1' : 'md:order-2'
         )}
       >
-        <Caption className="text-muted font-mono whitespace-nowrap">
-          {project.id.toUpperCase()} / {project.year} / {project.tech}
-        </Caption>
-      </div>
-
-      <div className="relative z-10 h-[clamp(500px,75vh,800px)] w-full lg:h-[600px]">
-        <div
-          ref={backlightRef}
-          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[50%] mix-blend-screen"
-          style={{
-            width: '120%',
-            height: '120%',
-            background:
-              'radial-gradient(ellipse at center, rgba(232, 167, 61, 0.12) 0%, rgba(232, 167, 61, 0) 70%)',
-            zIndex: -1,
-          }}
+        <img
+          ref={imageRef}
+          src={project.image as string}
+          alt={project.title as string}
+          className="absolute inset-0 h-full w-full object-cover"
         />
-
-        <div
-          ref={borderRef}
-          className="bg-surface relative flex h-full w-full flex-col items-center gap-8 overflow-hidden rounded-2xl border border-transparent p-6 transition-all duration-300 lg:flex-row lg:gap-12 lg:p-12"
-        >
-          <div
-            ref={numberRef}
-            className="text-text-primary pointer-events-none absolute -top-12 -left-4 z-0 font-mono leading-none font-bold select-none"
-            style={{ fontSize: 'clamp(6rem, 15vw, 12rem)', letterSpacing: '-0.05em' }}
-            aria-hidden="true"
-          >
-            {project.number}
-          </div>
-
-          <div
-            className={`border-border group-hover/project:border-accent-dim relative z-10 h-1/2 w-full overflow-hidden rounded-xl border transition-all duration-700 ease-[cubic-bezier(0.2,1,0.2,1)] group-hover/project:-translate-y-2 group-hover/project:shadow-2xl lg:h-full lg:w-3/5 ${isLeft ? 'order-1' : 'order-1 lg:order-2'}`}
-          >
-            <div ref={imageRef} className="absolute inset-0">
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 60vw"
-                priority={index < 2}
-              />
-            </div>
-          </div>
-
-          <div
-            className={`relative z-10 flex w-full flex-col justify-center lg:w-2/5 ${isLeft ? 'order-2' : 'order-2 lg:order-1'}`}
-          >
-            <div ref={contentWrapperRef} className="flex flex-col gap-6">
-              <Stack gap="sm">
-                <Caption className="text-muted font-medium tracking-[0.2em] uppercase">
-                  {project.category}
-                </Caption>
-                <Title
-                  as="h3"
-                  id={`project-title-${project.id}`}
-                  className="text-text-primary font-serif text-3xl italic lg:text-4xl"
-                >
-                  {project.title}
-                </Title>
-              </Stack>
-
-              <Body className="text-text-secondary leading-relaxed">{project.description}</Body>
-
-              <div className="flex flex-col gap-6 pt-4">
-                <Caption className="text-muted/60 font-mono xl:hidden">
-                  {project.id.toUpperCase()} / {project.year} / {project.tech}
-                </Caption>
-
-                <Link
-                  href={project.href}
-                  variant="unstyled"
-                  className="group text-text-primary focus-visible:ring-accent flex w-fit items-center gap-2 rounded-sm text-sm font-medium outline-none focus-visible:ring-2"
-                  aria-label={`${project.cta} for ${project.title}`}
-                >
-                  <span className="relative">
-                    {project.cta}
-                    <span className="bg-accent absolute -bottom-1 left-0 h-[1px] w-full origin-left scale-x-0 transition-transform duration-300 group-hover:scale-x-100" />
-                  </span>
-                  <ArrowRight
-                    size={16}
-                    className="text-accent transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Inner Shadow for premium depth */}
+        <div className="absolute inset-0 bg-black/10 ring-1 ring-white/10 ring-inset" />
       </div>
-    </article>
+
+      {/* Project Metadata & overlapping Title */}
+      <div
+        className={cn(
+          'relative z-10 flex w-full flex-col justify-center md:w-1/3',
+          isEven ? 'md:order-2' : 'md:order-1'
+        )}
+      >
+        <div className="text-accent mb-6 font-mono text-[10px] tracking-[0.3em] uppercase">
+          {project.category || 'Case Study'} — {project.year}
+        </div>
+
+        {/* Title overlaps the image visually on desktop */}
+        <h3
+          className={cn(
+            TYPOGRAPHY.display,
+            'mb-8 text-[8vw] leading-[0.9] md:text-[6vw]',
+            isEven ? 'md:-ml-[10vw]' : 'z-20 mix-blend-difference md:-mr-[10vw]'
+          )}
+        >
+          {project.title}
+        </h3>
+
+        <p className={TYPOGRAPHY.manifesto}>{project.description}</p>
+
+        <a
+          href={(project.link as string) || '#'}
+          className="group text-text-primary hover:text-accent mt-12 flex items-center gap-4 font-mono text-xs tracking-widest uppercase transition-colors"
+        >
+          <span className="relative">
+            View Project
+            <span className="bg-accent absolute -bottom-2 left-0 h-[1px] w-full origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100" />
+          </span>
+        </a>
+      </div>
+    </div>
   )
 }

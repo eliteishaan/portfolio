@@ -8,13 +8,14 @@ export const Hero = () => {
   return (
     <section
       id="hero"
-      className="bg-background relative z-10 flex h-[100svh] w-full items-center justify-center overflow-hidden"
+      className="bg-background relative z-10 flex min-h-[100svh] w-full items-center justify-center overflow-hidden"
     >
-      {/* Critical CSS Override for SplitType to prevent vertical stacking */}
+      {/* CRITICAL: Forces SplitType to behave on a single line */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        .split-text-target .word, .split-text-target .char { display: inline-block; }
+        .split-text-target { white-space: nowrap !important; }
+        .split-text-target .word, .split-text-target .char { display: inline-block !important; }
       `,
         }}
       />
@@ -28,10 +29,7 @@ export const Hero = () => {
         <GsapReveal delay={0.5}>
           <h1
             aria-hidden="true"
-            className={cn(
-              TYPOGRAPHY.display,
-              'split-text-target whitespace-nowrap mix-blend-difference'
-            )}
+            className={cn(TYPOGRAPHY.display, 'split-text-target mix-blend-difference')}
           >
             DIGITAL
             <br />

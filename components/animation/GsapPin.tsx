@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useRef } from 'react'
-import { gsap, useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
+import { useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
 interface GsapPinProps {
