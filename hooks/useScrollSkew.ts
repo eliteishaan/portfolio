@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useRef } from 'react'
 import { gsap } from '@/lib/animation/gsap'
 import { useLenis } from '@/hooks/useLenis'

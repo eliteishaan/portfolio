@@ -16,7 +16,24 @@ export const Services = () => {
           </div>
         </GsapReveal>
 
-        <ServicesMatrix services={SERVICES_CONTENT.items} />
+        <ServicesMatrix
+          services={SERVICES_CONTENT.items.map(
+            (item: {
+              id: string
+              title: string
+              description: string
+              videoUrl?: string
+              artifactImage?: string
+              [key: string]: unknown
+            }) => ({
+              id: item.id,
+              title: item.title,
+              description: item.description,
+              videoUrl: item.videoUrl,
+              artifactImage: item.artifactImage,
+            })
+          )}
+        />
       </div>
     </section>
   )

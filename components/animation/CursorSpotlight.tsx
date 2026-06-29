@@ -10,7 +10,8 @@ export const CursorSpotlight = () => {
   const prefersReducedMotion = useReducedMotion()
 
   useGSAP(() => {
-    if (prefersReducedMotion || !spotlightRef.current) return
+    const isTouch = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
+    if (prefersReducedMotion || !spotlightRef.current || isTouch) return
 
     const xTo = gsap.quickTo(spotlightRef.current, 'x', { duration: 0.15, ease: 'power3' })
     const yTo = gsap.quickTo(spotlightRef.current, 'y', { duration: 0.15, ease: 'power3' })
@@ -28,7 +29,8 @@ export const CursorSpotlight = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [prefersReducedMotion])
 
-  if (prefersReducedMotion) return null
+  const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
+  if (prefersReducedMotion || isTouchDevice) return null
 
   return (
     <div

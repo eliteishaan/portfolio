@@ -14,7 +14,8 @@ export const Magnetic = ({ children, className = '' }: MagneticProps) => {
   const prefersReducedMotion = useReducedMotion()
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (prefersReducedMotion || !ref.current) return
+    const isTouch = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
+    if (prefersReducedMotion || !ref.current || isTouch) return
     const { clientX, clientY } = e
     const { height, width, left, top } = ref.current.getBoundingClientRect()
     const x = clientX - (left + width / 2)
@@ -24,7 +25,8 @@ export const Magnetic = ({ children, className = '' }: MagneticProps) => {
   }
 
   const handleMouseLeave = () => {
-    if (prefersReducedMotion || !ref.current) return
+    const isTouch = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
+    if (prefersReducedMotion || !ref.current || isTouch) return
     gsap.to(ref.current, { x: 0, y: 0, duration: 1, ease: 'spring' })
   }
 

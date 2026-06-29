@@ -18,10 +18,14 @@ export const About = () => {
           {/* Asymmetric Left: Massive Bleeding Typography */}
           <GsapPin className="relative w-full lg:w-3/5">
             <GsapReveal split>
-              <h2 className={cn(TYPOGRAPHY.display, '-ml-[2vw] whitespace-nowrap')}>
+              <h2
+                aria-hidden="true"
+                className={cn(TYPOGRAPHY.display, '-ml-[2vw] whitespace-nowrap')}
+              >
                 {ABOUT_CONTENT.title}
               </h2>
             </GsapReveal>
+            <h2 className="sr-only">{ABOUT_CONTENT.title}</h2>
             <GsapReveal delay={0.1}>
               <div className={cn(TYPOGRAPHY.metadata, 'mt-4 md:ml-[2vw]')}>
                 {ABOUT_CONTENT.subtitle} — EST. 2026

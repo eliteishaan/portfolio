@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext, createContext } from 'react'
 import type Lenis from 'lenis'
 
