@@ -18,10 +18,23 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (isHashLink && lenis) {
         e.preventDefault()
+
+        // Dynamic duration based on distance for natural scrolling pace
+        let dynamicDuration = 1.6
+        try {
+          const target = document.querySelector(href as string)
+          if (target) {
+            const distance = Math.abs(target.getBoundingClientRect().top)
+            dynamicDuration = Math.min(Math.max(1.4, distance / 1500), 1.8)
+          }
+        } catch {
+          // Fallback if querySelector fails
+        }
+
         // Pass the scroll command directly to Lenis
         lenis.scrollTo(href as string, {
-          duration: 1.5,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          duration: dynamicDuration,
+          easing: (t: number) => (t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2),
         })
       }
       if (onClick) onClick(e)
