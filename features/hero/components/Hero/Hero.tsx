@@ -27,7 +27,7 @@ export const Hero = () => {
             aria-hidden="true"
             className={cn(
               TYPOGRAPHY.display,
-              'text-[16vw] leading-[0.8] mix-blend-difference md:text-[14vw]'
+              'text-[16vw] leading-[0.8] whitespace-nowrap mix-blend-difference md:text-[14vw] [&_.char]:inline-block [&_.word]:inline-block'
             )}
           >
             DIGITAL

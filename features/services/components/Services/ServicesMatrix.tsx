@@ -60,16 +60,16 @@ export const ServicesMatrix = ({ services }: { services: ServiceItem[] }) => {
       {!prefersReducedMotion && (
         <div
           ref={cursorMediaRef}
-          className={`bg-surface-elevated ease-spring pointer-events-none fixed top-0 left-0 z-50 h-64 w-96 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl transition-opacity duration-500 ${hoveredIndex !== null ? 'opacity-100' : 'opacity-0'}`}
+          className={`bg-surface-elevated ease-spring pointer-events-none fixed top-0 left-0 z-50 h-[250px] w-[400px] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-xl transition-opacity duration-500 ${hoveredIndex !== null ? 'opacity-100' : 'opacity-0'}`}
         >
           {hoveredIndex !== null && services[hoveredIndex].artifactImage ? (
             <img
               src={services[hoveredIndex].artifactImage}
               alt=""
-              className="h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-[radial-gradient(ellipse_at_center,_var(--color-surface-elevated)_0%,_var(--color-background)_100%)]">
+            <div className="absolute inset-0 flex h-full w-full items-center justify-center bg-[radial-gradient(ellipse_at_center,_var(--color-surface-elevated)_0%,_var(--color-background)_100%)]">
               <span className="text-accent font-mono text-xs tracking-widest uppercase">
                 WebGL Shader Bound
               </span>
