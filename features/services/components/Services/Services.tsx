@@ -22,15 +22,13 @@ export const Services = () => {
               id: string
               title: string
               description: string
-              videoUrl?: string
-              artifactImage?: string
+              image?: string
               [key: string]: unknown
             }) => ({
               id: item.id,
               title: item.title,
               description: item.description,
-              videoUrl: item.videoUrl,
-              artifactImage: item.artifactImage,
+              image: item.image,
             })
           )}
         />

@@ -1,14 +1,4 @@
-import {
-  Monitor,
-  Cloud,
-  Brain,
-  Bot,
-  Zap,
-  PenTool,
-  MonitorPlay,
-  Video,
-  Lightbulb,
-} from 'lucide-react'
+import { Monitor, Cloud, Brain, MonitorPlay } from 'lucide-react'
 
 export const SERVICES_CONTENT = {
   title: 'Capabilities',
@@ -20,7 +10,8 @@ export const SERVICES_CONTENT = {
       description:
         'Scalable, performant web platforms built for enterprise and high-growth startups.',
       icon: Monitor,
-      artifactImage: '',
+      image:
+        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
     },
     {
       id: 'saas',
@@ -28,21 +19,24 @@ export const SERVICES_CONTENT = {
       description:
         'End-to-end product development, from multi-tenant architecture to billing integration.',
       icon: Cloud,
-      artifactImage: '',
+      image:
+        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
     },
     {
       id: 'ai-solutions',
       title: 'AI Solutions',
       description: 'Integrating LLMs, RAG, and custom models to supercharge product capabilities.',
       icon: Brain,
-      artifactImage: '',
+      image:
+        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
     },
     {
       id: 'motion',
       title: 'Motion Design',
       description: 'Cinematic web experiences using GSAP and WebGL to elevate brand perception.',
       icon: MonitorPlay,
-      artifactImage: '',
+      image:
+        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
     },
   ],
 }
