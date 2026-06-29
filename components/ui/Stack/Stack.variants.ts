@@ -3,6 +3,13 @@ import { cva } from 'class-variance-authority'
 export const stackVariants = cva('flex flex-col', {
   variants: {
     gap: {
+      none: 'gap-0',
+      xs: 'gap-2',
+      sm: 'gap-4',
+      md: 'gap-6',
+      lg: 'gap-8',
+      xl: 'gap-12',
+      '2xl': 'gap-16',
       0: 'gap-0',
       4: 'gap-1',
       8: 'gap-2',
@@ -29,7 +36,7 @@ export const stackVariants = cva('flex flex-col', {
     },
   },
   defaultVariants: {
-    gap: 16,
+    gap: 'md',
     align: 'stretch',
     justify: 'start',
   },

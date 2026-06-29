@@ -14,13 +14,11 @@ const createTypography = (defaultAs: React.ElementType, defaultVariant: Typograp
       ref?: React.Ref<unknown>
     ) => {
       const ComponentToRender = as || defaultAs
-      return (
-        <ComponentToRender
-          ref={ref}
-          className={cn(typographyVariants({ variant }), className)}
-          {...props}
-        />
-      )
+      return React.createElement(ComponentToRender, {
+        ref,
+        className: cn(typographyVariants({ variant }), className),
+        ...props,
+      })
     }
   )
   Component.displayName = `Typography${String(defaultVariant)}`

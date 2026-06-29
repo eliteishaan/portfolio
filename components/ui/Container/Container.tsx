@@ -12,7 +12,11 @@ export const Container = React.forwardRef(
     ref?: React.Ref<unknown>
   ) => {
     const Comp = as || 'div'
-    return <Comp ref={ref} className={cn(containerVariants({ maxWidth }), className)} {...props} />
+    return React.createElement(Comp, {
+      ref,
+      className: cn(containerVariants({ maxWidth }), className),
+      ...props,
+    })
   }
 )
 Container.displayName = 'Container'

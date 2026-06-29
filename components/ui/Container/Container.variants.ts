@@ -9,10 +9,11 @@ export const containerVariants = cva('mx-auto px-4 sm:px-6 lg:px-8 w-full', {
       lg: 'max-w-lg',
       xl: 'max-w-xl',
       '2xl': 'max-w-2xl',
+      '7xl': 'max-w-7xl',
       full: 'max-w-full',
     },
   },
   defaultVariants: {
-    maxWidth: 'xl',
+    maxWidth: '7xl',
   },
 })

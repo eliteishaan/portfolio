@@ -12,7 +12,11 @@ export const Grid = React.forwardRef(
     ref?: React.Ref<unknown>
   ) => {
     const Comp = as || 'div'
-    return <Comp ref={ref} className={cn(gridVariants({ cols, gap }), className)} {...props} />
+    return React.createElement(Comp, {
+      ref,
+      className: cn(gridVariants({ cols, gap }), className),
+      ...props,
+    })
   }
 )
 Grid.displayName = 'Grid'
