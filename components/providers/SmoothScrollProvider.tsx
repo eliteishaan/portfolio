@@ -42,7 +42,14 @@ export const SmoothScrollProvider = ({ children }: { children: React.ReactNode }
     gsap.ticker.add(tick)
     gsap.ticker.lagSmoothing(0)
 
+    // Force GSAP to recalculate all trigger positions once Lenis is active
+    // We use a slight timeout to ensure React finishes DOM painting
+    const refreshTimeout = setTimeout(() => {
+      ScrollTrigger.refresh()
+    }, 150)
+
     return () => {
+      clearTimeout(refreshTimeout)
       lenisInstance.off('scroll', updateScrollTrigger)
       gsap.ticker.remove(tick)
       lenisInstance.destroy()

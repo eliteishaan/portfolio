@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import React, { useRef, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
@@ -27,7 +27,7 @@ export const Hero = () => {
   const lightContainerRef = useRef<HTMLDivElement>(null)
 
   const prefersReducedMotion = useReducedMotion()
-  const [gpuTier, setGpuTier] = useState<number | null>(null)
+  const [gpuTier, setGpuTier] = useState<number>(3)
 
   useEffect(() => {
     const checkGPU = async () => {
@@ -49,18 +49,24 @@ export const Hero = () => {
       let nameSplit: SplitType | null = null
       let roleSplit: SplitType | null = null
 
-      if (nameRef.current && roleRef.current && ctaRef.current && indicatorRef.current) {
-        nameSplit = new SplitType(nameRef.current, { types: 'chars' })
-        roleSplit = new SplitType(roleRef.current, { types: 'words' })
+      // Wait for fonts to avoid character overlapping
+      document.fonts.ready.then(() => {
+        if (nameRef.current && roleRef.current && ctaRef.current && indicatorRef.current) {
+          nameSplit = new SplitType(nameRef.current, { types: 'chars' })
+          roleSplit = new SplitType(roleRef.current, { types: 'words' })
 
-        runHeroEntrance(
-          lines,
-          nameSplit.chars,
-          roleSplit.words,
-          ctaRef.current,
-          indicatorRef.current
-        )
-      }
+          runHeroEntrance(
+            lines,
+            nameSplit.chars,
+            roleSplit.words,
+            ctaRef.current,
+            indicatorRef.current
+          )
+        }
+
+        // Force GSAP to recalculate heights after fonts are ready
+        ScrollTrigger.refresh()
+      })
 
       if (containerRef.current && nameRef.current && ctaRef.current && lightContainerRef.current) {
         runHeroScrollChoreography(

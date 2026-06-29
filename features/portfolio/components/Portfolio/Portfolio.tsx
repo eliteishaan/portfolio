@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import React, { useState, useEffect } from 'react'
 import { Section, Container, Stack, H2, Title } from '@/components/ui'
@@ -26,7 +26,7 @@ export const Portfolio = () => {
       targetY = e.clientY
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     const animate = () => {
       // Lerp

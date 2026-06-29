@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { gsap, useGSAP, ScrollTrigger } from '@/lib/animation/gsap'
 
 import React, { useRef, useState, useEffect } from 'react'
@@ -47,7 +47,7 @@ export const Contact = () => {
       if (prefersReducedMotion || !containerRef.current) return
 
       const elements = gsap.utils.toArray<HTMLElement>('.contact-animate', containerRef.current)
-      const blueprintLine = document.querySelector('.bg-border\/30') as HTMLElement | null
+      const blueprintLine = document.querySelector('.bg-border\\/30') as HTMLElement | null
 
       runContactEntrance(containerRef.current, elements, blueprintLine)
 
@@ -80,7 +80,7 @@ export const Contact = () => {
       targetY = e.clientY
     }
 
-    window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mousemove', handleMouseMove, { passive: true })
 
     const animate = () => {
       currentX += (targetX - currentX) * 0.1
