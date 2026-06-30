@@ -10,7 +10,7 @@ export const Portfolio = () => {
       {/* Section Header */}
       <div className="mx-auto mb-32 w-full max-w-[1600px] px-6 md:px-12">
         <h2 className={cn(TYPOGRAPHY.metadata, 'text-accent mb-4')}>02 // THE ARCHIVE</h2>
-        <h3 className={cn(TYPOGRAPHY.display, 'text-[10vw]')}>
+        <h3 className={cn(TYPOGRAPHY.display, 'text-[clamp(3rem,8vw,10rem)]')}>
           Selected
           <br />
           <span className="text-text-secondary italic">Works</span>

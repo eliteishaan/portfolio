@@ -12,7 +12,9 @@ export const Services = () => {
         <GsapReveal>
           <div className="border-border/30 mb-24 flex flex-col gap-4 border-b pb-12">
             <span className={TYPOGRAPHY.metadata}>{SERVICES_CONTENT.subtitle}</span>
-            <h2 className={cn(TYPOGRAPHY.display, 'text-[10vw]')}>{SERVICES_CONTENT.title}</h2>
+            <h2 className={cn(TYPOGRAPHY.display, 'text-[clamp(3rem,8vw,10rem)]')}>
+              {SERVICES_CONTENT.title}
+            </h2>
           </div>
         </GsapReveal>
 

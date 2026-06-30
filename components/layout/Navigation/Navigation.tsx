@@ -4,34 +4,11 @@ import * as React from 'react'
 import { Link } from '@/components/ui/Link'
 import { cn } from '@/lib/utils'
 import { type NavigationProps } from './Navigation.types'
+import { useActiveSection } from '@/hooks/useActiveSection'
 
 export const Navigation = React.forwardRef<HTMLElement, NavigationProps>(
   ({ className, items, ...props }, ref) => {
-    const [activeSection, setActiveSection] = React.useState('')
-
-    React.useEffect(() => {
-      // Create an observer that triggers when a section crosses the middle of the screen
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setActiveSection(`#${entry.target.id}`)
-            }
-          })
-        },
-        { rootMargin: '-50% 0px -50% 0px' }
-      )
-
-      // Observe all sections that match our navigation items
-      items.forEach((item) => {
-        if (item.href.startsWith('#')) {
-          const element = document.querySelector(item.href)
-          if (element) observer.observe(element)
-        }
-      })
-
-      return () => observer.disconnect()
-    }, [items])
+    const activeSection = useActiveSection(items)
 
     return (
       <nav ref={ref} className={cn('hidden items-center gap-6 md:flex', className)} {...props}>

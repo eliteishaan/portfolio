@@ -1,4 +1,4 @@
-﻿export type Project = {
+export type Project = {
   id: string
   number: string
   year: string
@@ -14,52 +14,52 @@
 
 export const PROJECTS_CONTENT = {
   title: 'Selected Works',
-  subtitle: 'Portfolio',
+  subtitle: 'Our Work',
   items: [
     {
       id: 'proj-001',
       number: '01',
       year: '2024',
-      category: 'Architecture & Frontend',
-      title: 'Financial Dashboard Concept',
+      category: 'Web Development',
+      title: 'Global Fintech Platform',
       description:
-        'A reference architecture for a secure, high-performance dashboard with dense data views and responsive interaction patterns.',
-      tech: 'React + Tailwind + Zustand',
+        'A comprehensive web application architecture delivering real-time financial data with uncompromising performance and security.',
+      tech: 'Next.js + React + Tailwind',
       image:
         'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop',
       align: 'left',
       href: '#contact',
-      cta: 'Discuss Similar Work',
+      cta: 'View Project',
     },
     {
       id: 'proj-002',
       number: '02',
       year: '2023',
-      category: 'Creative Engineering',
-      title: 'AI Assistant Prototype',
+      category: 'Video Production',
+      title: 'Cinematic Brand Anthem',
       description:
-        'A product prototype exploring guided intake, retrieval workflows, and careful human handoff patterns.',
-      tech: 'Three.js + GSAP + GLSL',
+        'A high-end commercial production combining live-action cinematography with subtle VFX to elevate brand perception.',
+      tech: '4K + RED + DaVinci',
       image:
         'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
       align: 'right',
       href: '#contact',
-      cta: 'Plan an AI Build',
+      cta: 'Watch Video',
     },
     {
       id: 'proj-003',
       number: '03',
-      year: '2022',
-      category: 'Design Systems',
-      title: 'Operations SaaS System',
+      year: '2024',
+      category: 'Marketing Creatives',
+      title: 'Automotive Launch Campaign',
       description:
-        'A modular SaaS interface model for workflows that need status visibility, repeatable components, and clear hierarchy.',
-      tech: 'Radix + CVA + Framer',
+        'A multi-channel creative campaign featuring 3D product visualizations, interactive web experiences, and targeted social assets.',
+      tech: 'Cinema4D + WebGL',
       image:
         'https://images.unsplash.com/photo-1507238692062-7101eeaeb1b9?q=80&w=2000&auto=format&fit=crop',
       align: 'left',
       href: '#contact',
-      cta: 'Scope a System',
+      cta: 'View Campaign',
     },
   ] as Project[],
 }

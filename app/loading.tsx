@@ -1,3 +1,6 @@
+import { Preloader } from '@/components/ui/Preloader/Preloader'
+
 export default function Loading() {
-  return <p>Loading...</p>
+  // Leverage the existing premium Preloader
+  return <Preloader />
 }

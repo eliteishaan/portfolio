@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
@@ -8,7 +8,7 @@ import { Link } from '@/components/ui/Link'
 import { useBodyScrollLock } from '@/hooks/useBodyScrollLock'
 import { useClickOutside } from '@/hooks/useClickOutside'
 import { useFocusTrap } from '@/hooks/useFocusTrap'
-import { usePathname } from 'next/navigation'
+import { useActiveSection } from '@/hooks/useActiveSection'
 
 const MenuIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -52,7 +52,7 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
   ({ className, items, isOpen, onClose, onToggle, ...props }, ref) => {
     const wrapperRef = React.useRef<HTMLDivElement>(null)
     const menuRef = React.useRef<HTMLDivElement>(null)
-    const pathname = usePathname()
+    const activeSection = useActiveSection(items)
 
     const setWrapperRefs = React.useCallback(
       (node: HTMLDivElement | null) => {
@@ -113,7 +113,7 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
           aria-label="Mobile navigation"
         >
           {items.map((item) => {
-            const isActive = pathname === item.href
+            const isActive = activeSection === item.href
             return (
               <Link
                 key={item.href}

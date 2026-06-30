@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { ThemeProvider } from '@/components/providers/theme-provider'
 import { SmoothScrollProvider } from '@/components/providers/SmoothScrollProvider'
 import { WebGLProvider } from '@/components/providers/WebGLProvider'
@@ -6,6 +6,10 @@ import { Preloader } from '@/components/ui/Preloader/Preloader'
 import { MainLayout } from '@/components/layout'
 import { SITE_CONFIG } from '@/lib/constants/site'
 import './globals.css'
+
+export const viewport: Viewport = {
+  themeColor: '#0A0A0B',
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_CONFIG.url),
@@ -40,8 +44,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.ico',
+    apple: '/favicon.ico', // Fallback, normally a separate PNG
   },
   manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    title: SITE_CONFIG.name,
+    statusBarStyle: 'black-translucent',
+  },
 }
 
 export default function RootLayout({

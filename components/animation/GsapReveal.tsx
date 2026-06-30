@@ -39,9 +39,9 @@ export const GsapReveal = ({
 
         gsap.to(splitText.chars, {
           yPercent: 0,
-          duration: 1.2,
+          duration: 1.4,
           delay: delay,
-          ease: 'spring',
+          ease: 'expo.out',
           stagger: 0.02,
           scrollTrigger: {
             trigger: containerRef.current,
@@ -55,9 +55,9 @@ export const GsapReveal = ({
           {
             autoAlpha: 1,
             y: 0,
-            duration: 1.2,
+            duration: 1.4,
             delay: delay,
-            ease: 'spring',
+            ease: 'expo.out',
             scrollTrigger: {
               trigger: containerRef.current,
               start: 'top 85%',

@@ -7,10 +7,13 @@ import { cn } from '@/lib/utils'
 
 export const About = () => {
   return (
-    <section id="about" className="bg-background relative w-full overflow-hidden py-32 md:py-48">
+    <section
+      id="about"
+      className="bg-background relative w-full overflow-hidden py-[clamp(6rem,15vw,12rem)]"
+    >
       {/* Volumetric Amber Lighting */}
       <div className="pointer-events-none absolute top-1/2 left-1/2 z-0 h-[800px] w-[800px] -translate-x-1/2 -translate-y-1/2 opacity-20 mix-blend-screen">
-        <div className="absolute inset-0 rounded-full bg-[radial-gradient(circle_at_center,_var(--color-accent)_0%,_transparent_70%)] blur-3xl" />
+        <div className="bg-[radial-gradient(circle_at_center,_theme(colors.accent.DEFAULT)_0%,_transparent_70%)] absolute inset-0 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1600px] px-6 md:px-12">
@@ -20,7 +23,10 @@ export const About = () => {
             <GsapReveal split>
               <h2
                 aria-hidden="true"
-                className={cn(TYPOGRAPHY.display, '-ml-[2vw] whitespace-nowrap')}
+                className={cn(
+                  TYPOGRAPHY.display,
+                  'whitespace-normal md:-ml-[2vw] md:whitespace-nowrap'
+                )}
               >
                 {ABOUT_CONTENT.title}
               </h2>

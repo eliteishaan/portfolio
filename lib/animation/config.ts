@@ -11,6 +11,8 @@ export const ANIMATION_CONFIG = {
     out: 'power2.out',
     inOut: 'power2.inOut',
     spring: 'back.out(1.7)',
+    cinematic: 'expo.out',
+    reveal: 'power4.out',
   },
   stagger: {
     fast: 0.05,

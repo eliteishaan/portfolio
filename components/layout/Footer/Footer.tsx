@@ -1,10 +1,11 @@
-﻿'use client'
+'use client'
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
 import { type FooterProps } from './Footer.types'
 import { Container, Stack, Grid, Body, Caption } from '@/components/ui'
 import { CONTACT_CONTENT } from '@/content/contact'
+import { SITE_CONFIG } from '@/lib/constants/site'
 
 export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, ...props }, ref) => {
   const [time, setTime] = React.useState<string>('')
@@ -87,7 +88,9 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, .
           </div>
 
           <div className="text-text-secondary mt-8 flex flex-col items-center justify-between font-mono text-sm sm:flex-row">
-            <span>(c) {new Date().getFullYear()} Nexus Studio.</span>
+            <span>
+              &copy; {new Date().getFullYear()} {SITE_CONFIG.name}.
+            </span>
             <span>All rights reserved.</span>
           </div>
         </Stack>

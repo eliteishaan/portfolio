@@ -1,5 +1,5 @@
-﻿export const ABOUT_CONTENT = {
-  title: 'Digital Product Studio',
+export const ABOUT_CONTENT = {
+  title: 'Ravenhall Studio',
   subtitle: 'About the Studio',
   story: [
     'We build focused digital products with a small, senior team across strategy, interface design, engineering, motion, and launch readiness.',

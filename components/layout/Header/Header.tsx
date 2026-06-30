@@ -8,7 +8,9 @@ import { Navigation } from '../Navigation'
 import { MobileNavigation } from '../MobileNavigation'
 import { MAIN_NAVIGATION } from '@/lib/constants/navigation'
 import { Container } from '@/components/ui/Container'
+import { Magnetic } from '@/components/animation/Magnetic'
 import { useHeaderState } from '@/hooks/useHeaderState'
+import { SITE_CONFIG } from '@/lib/constants/site'
 
 export const Header = React.forwardRef<HTMLElement, HeaderProps>(({ className, ...props }, ref) => {
   const headerState = useHeaderState()
@@ -33,14 +35,24 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(({ className, .
       {...props}
     >
       <Container maxWidth="xl" className="flex items-center justify-between">
-        <Logo />
-        <Navigation items={MAIN_NAVIGATION} />
-        <MobileNavigation
-          items={MAIN_NAVIGATION}
-          isOpen={isMobileMenuOpen}
-          onClose={() => setIsMobileMenuOpen(false)}
-          onToggle={() => setIsMobileMenuOpen((prev) => !prev)}
-        />
+        <Logo text={SITE_CONFIG.name} />
+        <div className="flex items-center gap-6">
+          <Navigation items={MAIN_NAVIGATION} />
+          <Magnetic>
+            <a
+              href="#contact"
+              className="bg-text-primary text-background hidden h-10 items-center justify-center rounded-full px-6 font-mono text-xs font-semibold tracking-widest transition-transform hover:scale-105 active:scale-95 md:flex"
+            >
+              START PROJECT
+            </a>
+          </Magnetic>
+          <MobileNavigation
+            items={MAIN_NAVIGATION}
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
+            onToggle={() => setIsMobileMenuOpen((prev) => !prev)}
+          />
+        </div>
       </Container>
     </header>
   )
