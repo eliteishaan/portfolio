@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef, useMemo } from 'react'
+import React, { useRef, useMemo, useEffect } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -36,7 +36,30 @@ void main() {
 
 export const ReactiveMeshScene = () => {
   const materialRef = useRef<THREE.ShaderMaterial>(null)
+  const meshRef = useRef<THREE.Mesh>(null)
+  const isVisible = useRef(true)
   const { viewport } = useThree()
+
+  useEffect(() => {
+    // Non-state-triggering IntersectionObserver to halt uTime loops when out of view
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible.current = entry.isIntersecting
+      },
+      { threshold: 0 }
+    )
+
+    // We observe the canvas parent element which is outside R3F context,
+    // but since we can't easily grab it from here without drilling refs,
+    // we just use a small DOM trick to find our canvas wrapper.
+    const canvasElement = document.querySelector('canvas')
+    if (canvasElement) observer.observe(canvasElement)
+
+    return () => {
+      if (canvasElement) observer.unobserve(canvasElement)
+      observer.disconnect()
+    }
+  }, [])
 
   const uniforms = useMemo(
     () => ({
@@ -47,6 +70,8 @@ export const ReactiveMeshScene = () => {
   )
 
   useFrame((state) => {
+    if (!isVisible.current) return // MASSIVE GPU SAVINGS
+
     if (materialRef.current) {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime
 
@@ -63,7 +88,7 @@ export const ReactiveMeshScene = () => {
   })
 
   return (
-    <mesh>
+    <mesh ref={meshRef}>
       <planeGeometry args={[viewport.width, viewport.height, 1, 1]} />
       <shaderMaterial
         ref={materialRef}

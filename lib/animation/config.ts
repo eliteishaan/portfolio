@@ -10,9 +10,10 @@ export const ANIMATION_CONFIG = {
     in: 'power2.in',
     out: 'power2.out',
     inOut: 'power2.inOut',
-    spring: 'back.out(1.7)',
-    cinematic: 'expo.out',
-    reveal: 'power4.out',
+    spring: 'ravenhall',
+    cinematic: 'ravenhall',
+    reveal: 'ravenhall',
+    ravenhall: 'ravenhall',
   },
   stagger: {
     fast: 0.05,

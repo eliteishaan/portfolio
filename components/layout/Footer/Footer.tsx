@@ -28,7 +28,7 @@ export const Footer = React.forwardRef<HTMLElement, FooterProps>(({ className, .
     <footer
       ref={ref}
       className={cn(
-        'bg-background border-border/30 relative w-full overflow-hidden border-t pt-24 pb-12',
+        'bg-background border-border/30 relative z-20 w-full overflow-hidden border-t pt-24 pb-12 shadow-[0_-20px_50px_rgba(0,0,0,0.5)]',
         className
       )}
       {...props}
