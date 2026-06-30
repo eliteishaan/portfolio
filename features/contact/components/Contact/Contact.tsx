@@ -1,7 +1,6 @@
 'use client'
 
 import React, { useRef } from 'react'
-import { CursorSpotlight } from '@/components/animation/CursorSpotlight'
 import { TYPOGRAPHY } from '@/lib/design-tokens/typography'
 import { cn } from '@/lib/utils'
 import { ArrowRight } from 'lucide-react'
@@ -35,13 +34,13 @@ export const Contact = () => {
       ref={containerRef}
       className="bg-background relative z-10 flex h-[100svh] w-full flex-col justify-center overflow-hidden py-24"
     >
-      <CursorSpotlight />
-
-      <div className="relative z-10 mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center px-6 text-center md:px-12">
+      <div className="group/contact relative z-10 mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center px-6 text-center md:px-12">
         {/* Massive Let's Talk */}
         <h2
-          className="text-accent font-serif tracking-tighter italic"
-          style={{ fontSize: 'clamp(5rem, 15vw, 15rem)', lineHeight: 0.9 }}
+          className={cn(
+            TYPOGRAPHY.display,
+            'text-text-primary transition-opacity duration-500 group-has-[.email-link:hover]/contact:opacity-20'
+          )}
         >
           Let&apos;s Talk
         </h2>
@@ -51,7 +50,7 @@ export const Contact = () => {
           <Magnetic>
             <a
               href={`mailto:${CONTACT_CONTENT.email}`}
-              className="text-text-primary hover:text-accent group flex items-center justify-center gap-4 font-sans transition-colors duration-500"
+              className="email-link text-text-primary group flex items-center justify-center gap-4 font-sans transition-colors duration-500"
               style={{
                 fontSize: 'clamp(2rem, 5vw, 5rem)',
                 fontWeight: 300,
@@ -64,17 +63,15 @@ export const Contact = () => {
           </Magnetic>
         </div>
 
-        <div className="mt-16 flex items-center gap-6">
+        <div className="mt-16 flex items-center gap-6 transition-opacity duration-500 group-has-[.email-link:hover]/contact:opacity-20">
           <p className={cn(TYPOGRAPHY.metadata, 'opacity-50')}>HQ // 40.7128° N, 74.0060° W</p>
           <Magnetic>
             <a
-              href={CONTACT_CONTENT.socials.find((s) => s.label === 'WhatsApp')?.href || '#'}
-              target="_blank"
-              rel="noreferrer"
-              className="border-accent/30 bg-accent/5 hover:bg-accent/10 flex items-center gap-3 rounded-full border px-6 py-3 transition-colors"
+              href="mailto:hello@ravenhall.com"
+              className="border-border/40 bg-surface hover:bg-surface-elevated flex items-center gap-3 rounded-full border px-8 py-3.5 leading-none transition-colors"
             >
-              <span className="text-accent font-mono text-xs tracking-widest uppercase">
-                WhatsApp
+              <span className="text-text-primary font-mono text-xs tracking-widest uppercase">
+                Book a Discovery Call
               </span>
             </a>
           </Magnetic>

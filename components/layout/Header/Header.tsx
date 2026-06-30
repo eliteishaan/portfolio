@@ -41,7 +41,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(({ className, .
           <Magnetic>
             <a
               href="#contact"
-              className="bg-text-primary text-background hidden h-10 items-center justify-center rounded-full px-6 font-mono text-xs font-semibold tracking-widest transition-transform hover:scale-105 active:scale-95 md:flex"
+              className="bg-text-primary text-background hidden h-auto items-center justify-center rounded-full px-8 py-3.5 font-mono text-xs leading-none font-semibold tracking-widest transition-transform hover:scale-105 active:scale-95 md:flex"
             >
               START PROJECT
             </a>

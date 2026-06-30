@@ -1,15 +1,19 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { gsap, ScrollTrigger } from '@/lib/animation/gsap'
 import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { Canvas } from '@react-three/fiber'
+import * as THREE from 'three'
 
 export const Preloader = () => {
   const preloaderRef = useRef<HTMLDivElement>(null)
-  const boxRef = useRef<HTMLDivElement>(null)
+  const meshRef = useRef<THREE.Mesh>(null)
   const textRef = useRef<HTMLDivElement>(null)
+  const cameraRef = useRef<THREE.Group>(null)
   const prefersReducedMotion = useReducedMotion()
+  const [showCanvas, setShowCanvas] = useState(true)
 
   useGSAP(
     () => {
@@ -19,41 +23,55 @@ export const Preloader = () => {
       }
 
       // Initial States
-      gsap.set(boxRef.current, { y: '-100vh' })
+      if (meshRef.current) {
+        gsap.set(meshRef.current.position, { y: 15 }) // Drop from high up
+        gsap.set(meshRef.current.scale, { x: 1, y: 1, z: 1 })
+      }
       gsap.set(textRef.current, { clipPath: 'inset(0 50% 0 50%)', opacity: 0 })
 
       const tl = gsap.timeline({
         onComplete: () => {
           gsap.set(preloaderRef.current, { display: 'none', pointerEvents: 'none' })
+          setShowCanvas(false)
           ScrollTrigger.refresh()
         },
       })
 
       // 0.0s - 1.0s (The Drop)
-      tl.to(
-        boxRef.current,
-        {
-          y: 0,
-          duration: 1.0,
-          ease: 'expo.in',
-        },
-        0
-      )
+      if (meshRef.current && cameraRef.current) {
+        tl.to(
+          meshRef.current.position,
+          {
+            y: 0,
+            duration: 1.0,
+            ease: 'expo.in',
+            onComplete: () => {
+              // Subtle camera shake on impact
+              if (cameraRef.current) {
+                gsap.fromTo(
+                  cameraRef.current.position,
+                  { y: 0.2, x: 0.1 },
+                  { y: 0, x: 0, duration: 0.1, ease: 'power4.out', clearProps: 'all' }
+                )
+              }
+            },
+          },
+          0
+        )
 
-      // 1.0s - 1.3s (Hold) -> no tween needed, just schedule next tween at 1.3s
-
-      // 1.3s - 2.1s (The Mechanical Expansion)
-      tl.to(
-        boxRef.current,
-        {
-          scaleX: 12,
-          scaleY: 0.1,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'expo.inOut',
-        },
-        1.3
-      )
+        // 1.3s - 2.1s (The Mechanical Expansion)
+        tl.to(
+          meshRef.current.scale,
+          {
+            x: 50, // Massive horizontal expansion
+            y: 0.1,
+            z: 0.1,
+            duration: 0.8,
+            ease: 'expo.inOut',
+          },
+          1.3
+        )
+      }
 
       tl.to(
         textRef.current,
@@ -101,8 +119,28 @@ export const Preloader = () => {
           RAVENHALL
         </div>
 
-        {/* The Impact Box */}
-        <div ref={boxRef} className="impact-box absolute z-10 h-12 w-12 bg-white" />
+        {/* The 3D Monolith Canvas */}
+        {showCanvas && (
+          <div className="pointer-events-none absolute inset-0 z-10">
+            <Canvas camera={{ position: [0, 0, 10], fov: 35 }}>
+              <group ref={cameraRef}>
+                <spotLight
+                  position={[0, 10, 5]}
+                  angle={0.5}
+                  penumbra={1}
+                  intensity={5}
+                  color="#ffffff"
+                  castShadow
+                />
+                <ambientLight intensity={0.5} />
+                <mesh ref={meshRef}>
+                  <boxGeometry args={[1, 1, 1]} />
+                  <meshStandardMaterial color="#2a2a2a" metalness={0.9} roughness={0.2} />
+                </mesh>
+              </group>
+            </Canvas>
+          </div>
+        )}
       </div>
     </div>
   )
