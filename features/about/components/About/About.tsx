@@ -26,9 +26,9 @@ export const About = () => {
 
       gsap.fromTo(
         words,
-        { opacity: 0.1 },
+        { color: 'rgba(255, 255, 255, 0.25)' }, // Mid-grey that passes WCAG against black
         {
-          opacity: 1,
+          color: '#ffffff',
           stagger: 0.1,
           ease: 'none',
           scrollTrigger: {
@@ -74,10 +74,7 @@ export const About = () => {
         >
           {isClient ? (
             words.map((word, i) => (
-              <span
-                key={i}
-                className="word-span mr-[0.3em] inline-block opacity-10 transition-colors"
-              >
+              <span key={i} className="word-span mr-[0.3em] inline-block transition-colors">
                 {word}
               </span>
             ))

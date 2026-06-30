@@ -44,7 +44,7 @@ export const Portfolio = () => {
     <section
       id="work"
       ref={sectionRef}
-      className="bg-background relative z-20 flex h-[100svh] w-full flex-col justify-center overflow-hidden"
+      className="bg-background relative z-10 flex h-[100svh] w-full flex-col justify-center overflow-hidden"
     >
       {/* Sticky Header / Filter */}
       <div className="pointer-events-none absolute top-12 left-0 z-30 flex w-full items-start justify-between px-6 md:px-12">

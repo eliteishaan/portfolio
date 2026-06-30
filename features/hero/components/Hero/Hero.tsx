@@ -111,7 +111,7 @@ export const Hero = () => {
       </div>
 
       {/* 4. Editorial Typography Layer (Front) */}
-      <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center mix-blend-difference">
+      <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]">
         <GsapReveal>
           <div className="mb-8 flex flex-col items-center gap-2">
             <span className="font-sans text-sm font-semibold tracking-wide text-white uppercase">

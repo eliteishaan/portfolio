@@ -63,7 +63,7 @@ export const Preloader = () => {
           duration: 0.8,
           ease: 'expo.inOut',
         },
-        1.3
+        '<' // Use absolute syncing to the previous box expansion tween
       )
 
       // 2.1s - 3.0s (Hold)
@@ -91,7 +91,7 @@ export const Preloader = () => {
         {/* The Exact RAVENHALL text behind the box */}
         <div
           ref={textRef}
-          className="brand-text font-serif font-bold text-white italic mix-blend-difference select-none"
+          className="brand-text relative z-0 font-serif font-bold text-white italic select-none"
           style={{
             fontSize: 'clamp(3rem, 8vw, 6rem)',
             lineHeight: 0.8,
@@ -102,7 +102,7 @@ export const Preloader = () => {
         </div>
 
         {/* The Impact Box */}
-        <div ref={boxRef} className="impact-box absolute h-12 w-12 bg-white" />
+        <div ref={boxRef} className="impact-box absolute z-10 h-12 w-12 bg-white" />
       </div>
     </div>
   )
