@@ -26,7 +26,7 @@ export const PROJECTS_CONTENT = {
         'A comprehensive web application architecture delivering real-time financial data with uncompromising performance and security.',
       tech: 'Next.js + React + Tailwind',
       image:
-        'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2000&auto=format&fit=crop', // Stark dark abstract placeholder
       align: 'left',
       href: '#contact',
       cta: 'View Project',
@@ -56,7 +56,7 @@ export const PROJECTS_CONTENT = {
         'A multi-channel creative campaign featuring 3D product visualizations, interactive web experiences, and targeted social assets.',
       tech: 'Cinema4D + WebGL',
       image:
-        'https://images.unsplash.com/photo-1507238692062-7101eeaeb1b9?q=80&w=2000&auto=format&fit=crop',
+        'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2000&auto=format&fit=crop', // Stark dark geometric placeholder
       align: 'left',
       href: '#contact',
       cta: 'View Campaign',

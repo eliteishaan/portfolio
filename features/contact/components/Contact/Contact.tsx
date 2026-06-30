@@ -63,8 +63,10 @@ export const Contact = () => {
           </Magnetic>
         </div>
 
-        <div className="mt-16 flex items-center gap-6 transition-opacity duration-500 group-has-[.email-link:hover]/contact:opacity-20">
-          <p className={cn(TYPOGRAPHY.metadata, 'opacity-50')}>HQ // 40.7128° N, 74.0060° W</p>
+        <div className="mt-16 flex flex-col items-center gap-6 transition-opacity duration-500 group-has-[.email-link:hover]/contact:opacity-20 md:flex-row">
+          <p className={cn(TYPOGRAPHY.metadata, 'opacity-50')}>
+            © RAVENHALL STUDIO. ALL RIGHTS RESERVED.
+          </p>
           <Magnetic>
             <a
               href="mailto:hello@ravenhall.com"

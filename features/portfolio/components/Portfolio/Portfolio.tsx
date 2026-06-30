@@ -70,11 +70,13 @@ export const Portfolio = () => {
       {/* Horizontal Scroll Track */}
       <div
         ref={trackRef}
-        className="mt-24 flex h-[70vh] w-[max-content] items-center gap-12 px-6 md:gap-32 md:px-32"
+        className="mt-24 flex h-[70vh] w-[max-content] items-center gap-12 px-6 md:gap-32 md:px-12"
       >
         {PROJECTS_CONTENT.items.map((project, idx) => (
           <PortfolioProject key={project.id} project={project} index={idx} />
         ))}
+        {/* Spacer to ensure final card clears the viewport with a premium margin */}
+        <div className="w-[10vw] shrink-0 md:w-[20vw]" />
       </div>
     </section>
   )

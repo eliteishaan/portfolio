@@ -61,7 +61,7 @@ export const About = () => {
       <div className="relative z-10 mx-auto w-full max-w-[1200px] px-6 text-center md:px-12">
         <div className="mb-12">
           <span className="text-accent font-mono text-sm tracking-widest uppercase">
-            {ABOUT_CONTENT.subtitle} — EST. 2026
+            {ABOUT_CONTENT.subtitle}
           </span>
         </div>
 

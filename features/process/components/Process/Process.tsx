@@ -56,14 +56,14 @@ export const Process = () => {
       className="bg-background relative z-20 w-full py-[clamp(6rem,15vw,12rem)]"
     >
       <div className="mx-auto w-full max-w-[1600px] px-6 md:px-12" ref={containerRef}>
-        <div className="border-border/30 mb-24 flex flex-col gap-4 border-b pb-12">
+        <div className="border-border/30 mb-12 flex flex-col gap-4 border-b pb-8">
           <span className={TYPOGRAPHY.metadata}>{PROCESS_CONTENT.subtitle}</span>
           <h2 className={cn(TYPOGRAPHY.display, 'text-[clamp(3rem,8vw,10rem)]')}>
             {PROCESS_CONTENT.title}
           </h2>
         </div>
 
-        <div className="relative ml-4 flex flex-col gap-24 md:ml-12 lg:gap-32">
+        <div className="relative ml-4 flex flex-col gap-16 md:ml-12 lg:gap-24">
           {/* Animated SVG Connector Line (Left Anchor) */}
           <div className="bg-border/20 absolute top-0 bottom-0 left-0 w-[2px]">
             <div

@@ -80,11 +80,11 @@ export const ServicesMatrix = ({
             >
               <div className="flex w-full items-center justify-between">
                 <h3
-                  className={`text-text-primary font-serif text-[8vw] tracking-tight uppercase transition-all duration-500 md:text-[5vw] ${isHovered ? 'text-accent pl-8' : 'pl-0'}`}
+                  className={`text-text-primary font-serif text-[8vw] leading-none tracking-tight uppercase transition-all duration-500 md:text-[5vw] ${isHovered ? 'text-accent pl-8' : 'pl-0'}`}
                 >
                   {service.title}
                 </h3>
-                <span className="text-accent hidden font-mono text-sm tracking-[0.2em] opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block">
+                <span className="text-accent hidden font-mono text-sm leading-none tracking-[0.2em] opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:block">
                   EXPLORE CAPABILITY
                 </span>
               </div>
