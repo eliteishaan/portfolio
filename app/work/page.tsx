@@ -9,6 +9,12 @@ import Link from 'next/link'
 export const metadata = {
   title: 'All Work | Ravenhall',
   description: 'Complete archive of digital product and creative work by Ravenhall Studio.',
+  alternates: { canonical: '/work' },
+  openGraph: {
+    url: '/work',
+    title: 'All Work | Ravenhall',
+    description: 'Complete archive of digital product and creative work by Ravenhall Studio.',
+  },
 }
 
 export default function WorkPage() {

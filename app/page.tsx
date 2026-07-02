@@ -6,6 +6,12 @@ import { Process } from '@/features/process'
 import { Contact } from '@/features/contact'
 import { getHomepageProjects } from '@/content/projects'
 import { SITE_CONFIG } from '@/lib/constants/site'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+  openGraph: { url: '/' },
+}
 
 export default async function Home() {
   const showcaseProjects = getHomepageProjects(SITE_CONFIG.homepageShowcaseLimit)

@@ -1,21 +1,41 @@
 import { NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { z } from 'zod'
 
 // Initialize Resend (will be undefined if no key, handled in fallback)
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
 
+const contactSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(100),
+  email: z.string().email('Invalid email address'),
+  service: z.string().min(2).max(500),
+  _honeypot: z.string().optional(),
+  _timestamp: z.string().optional(),
+})
+
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, email, service, _honeypot, _timestamp } = body
 
-    // 1. Honeypot Validation (Spam Protection)
+    // 1. Zod Validation & Sanitization
+    const result = contactSchema.safeParse(body)
+
+    if (!result.success) {
+      return NextResponse.json(
+        { error: result.error.issues[0].message || 'Invalid form data.' },
+        { status: 400 }
+      )
+    }
+
+    const { name, email, service, _honeypot, _timestamp } = result.data
+
+    // 2. Honeypot Validation (Spam Protection)
     if (_honeypot !== undefined && _honeypot !== '') {
       // Spam detected. Fail silently to confuse bots.
       return NextResponse.json({ success: true, message: 'Message received.' })
     }
 
-    // 2. Timestamp Validation (Reject instant submissions)
+    // 3. Timestamp Validation (Reject instant submissions)
     if (_timestamp) {
       const submissionTime = Date.now()
       const renderTime = parseInt(_timestamp, 10)
@@ -31,51 +51,40 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing security token.' }, { status: 400 })
     }
 
-    // 3. Server-side Validation
-    if (!name || typeof name !== 'string' || name.length < 2 || name.length > 100) {
-      return NextResponse.json({ error: 'Invalid name provided.' }, { status: 400 })
-    }
-
-    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json({ error: 'Invalid email provided.' }, { status: 400 })
-    }
-
-    if (!service || typeof service !== 'string' || service.length < 2 || service.length > 500) {
-      return NextResponse.json({ error: 'Invalid service description.' }, { status: 400 })
-    }
-
-    // 4. Resend Integration & Graceful Fallback
+    // 4. Resend Integration & Fail-Safe Verification
     if (resend) {
-      const { error } = await resend.emails.send({
+      const { error: resendError } = await resend.emails.send({
         from: 'Ravenhall Studio <onboarding@resend.dev>', // Should use verified domain in prod
-        to: 'hello@ravenhall.studio', // The studio's actual email
+        to: 'hello@ravenhallstudio.com', // The studio's actual email
         replyTo: email,
         subject: `New Inquiry from ${name}`,
         text: `Name: ${name}\nEmail: ${email}\nService: ${service}\n\nSubmitted at: ${new Date().toISOString()}`,
       })
 
-      if (error) {
-        console.error('Resend API Error:', error)
+      if (resendError) {
+        console.error('Contact API Error: Failed to send via email provider.') // Sanitized logging
         return NextResponse.json(
           { error: 'Failed to send message via email provider.' },
           { status: 500 }
         )
       }
     } else {
-      // Graceful Fallback for Local Dev / Missing API Key
-      console.warn('RESEND_API_KEY is missing. Simulating email send.')
-      console.log('--- MOCK EMAIL ---')
-      console.log(`From: ${name} <${email}>`)
-      console.log(`Service: ${service}`)
-      console.log('------------------')
+      if (process.env.NODE_ENV === 'production') {
+        // Never return success in production when email cannot be sent
+        console.error('Contact API Error: RESEND_API_KEY is missing in production.')
+        return NextResponse.json({ error: 'Email service is not configured.' }, { status: 500 })
+      }
 
-      // Simulate network delay
+      // Graceful Fallback for Local Dev only
+      console.warn('RESEND_API_KEY is missing in development. Simulating email send.')
       await new Promise((resolve) => setTimeout(resolve, 800))
     }
 
+    console.log('Contact request processed successfully.') // Sanitized logging
+
     return NextResponse.json({ success: true, message: 'Message received successfully.' })
-  } catch (error) {
-    console.error('Contact API Error:', error)
+  } catch (err) {
+    console.error('Contact API Error: Internal server error.', err) // Sanitized logging
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 })
   }
 }

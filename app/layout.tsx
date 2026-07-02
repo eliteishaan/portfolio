@@ -22,13 +22,9 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_CONFIG.name }],
   creator: SITE_CONFIG.name,
   publisher: SITE_CONFIG.name,
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: '/',
     siteName: SITE_CONFIG.name,
     title: `${SITE_CONFIG.name} | Digital Product Studio`,
     description: SITE_CONFIG.description,
@@ -60,16 +56,40 @@ export default function RootLayout({
 }>) {
   const structuredData = {
     '@context': 'https://schema.org',
-    '@type': 'ProfessionalService',
-    name: SITE_CONFIG.name,
-    url: SITE_CONFIG.url,
-    email: SITE_CONFIG.email,
-    description: SITE_CONFIG.description,
-    serviceType: [
-      'Web application development',
-      'AI workflow design',
-      'Automation',
-      'UI engineering',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_CONFIG.url}/#website`,
+        url: SITE_CONFIG.url,
+        name: SITE_CONFIG.name,
+        description: SITE_CONFIG.description,
+      },
+      {
+        '@type': 'Organization',
+        '@id': `${SITE_CONFIG.url}/#organization`,
+        name: SITE_CONFIG.name,
+        url: SITE_CONFIG.url,
+        logo: `${SITE_CONFIG.url}/favicon.ico`,
+        contactPoint: {
+          '@type': 'ContactPoint',
+          email: SITE_CONFIG.email,
+          contactType: 'customer support',
+        },
+      },
+      {
+        '@type': 'ProfessionalService',
+        '@id': `${SITE_CONFIG.url}/#service`,
+        name: SITE_CONFIG.name,
+        url: SITE_CONFIG.url,
+        email: SITE_CONFIG.email,
+        description: SITE_CONFIG.description,
+        serviceType: [
+          'Web application development',
+          'AI workflow design',
+          'Automation',
+          'UI engineering',
+        ],
+      },
     ],
   }
 

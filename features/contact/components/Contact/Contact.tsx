@@ -69,7 +69,7 @@ export const Contact = () => {
           </p>
           <Magnetic>
             <a
-              href="mailto:hello@ravenhall.com"
+              href={`mailto:${CONTACT_CONTENT.email}`}
               className="border-border/40 bg-surface hover:bg-surface-elevated flex items-center gap-3 rounded-full border px-8 py-3.5 leading-none transition-colors"
             >
               <span className="text-text-primary font-mono text-xs tracking-widest uppercase">
