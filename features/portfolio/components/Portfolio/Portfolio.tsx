@@ -1,82 +1,56 @@
 'use client'
 
-import React, { useRef } from 'react'
-import { PROJECTS_CONTENT } from '@/content/projects'
+import React from 'react'
+import { type Project } from '@/content/projects'
 import { PortfolioProject } from './PortfolioProject'
 import { TYPOGRAPHY } from '@/lib/design-tokens/typography'
 import { cn } from '@/lib/utils'
-import { useGSAP } from '@gsap/react'
-import { gsap, ScrollTrigger } from '@/lib/animation/gsap'
+import Link from 'next/link'
 
-export const Portfolio = () => {
-  const sectionRef = useRef<HTMLDivElement>(null)
-  const trackRef = useRef<HTMLDivElement>(null)
-
-  useGSAP(
-    () => {
-      if (!trackRef.current) return
-
-      // Get total width of track to translate
-      const getScrollAmount = () => {
-        const trackWidth = trackRef.current?.scrollWidth || 0
-        return -(trackWidth - window.innerWidth)
-      }
-
-      const tween = gsap.to(trackRef.current, {
-        x: getScrollAmount,
-        ease: 'none',
-      })
-
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: () => `+=${getScrollAmount() * -1}`,
-        pin: true,
-        animation: tween,
-        scrub: 1,
-        invalidateOnRefresh: true, // Crucial for dynamic resize recalculation
-      })
-    },
-    { scope: sectionRef }
-  )
-
+export const Portfolio = ({ showcaseProjects }: { showcaseProjects: Project[] }) => {
   return (
-    <section
-      id="work"
-      ref={sectionRef}
-      className="bg-background relative z-10 flex h-[100svh] w-full flex-col justify-center overflow-hidden"
-    >
-      {/* Sticky Header / Filter */}
-      <div className="pointer-events-none absolute top-12 left-0 z-30 flex w-full items-start justify-between px-6 md:px-12">
-        <div>
-          <h2 className={cn(TYPOGRAPHY.metadata, 'text-accent mb-2')}>02 // THE ARCHIVE</h2>
-          <h3 className={cn(TYPOGRAPHY.display, 'text-4xl md:text-6xl')}>
-            Selected <span className="text-text-secondary italic">Works</span>
-          </h3>
+    <section id="work" className="bg-background relative z-10 w-full py-[clamp(6rem,15vw,12rem)]">
+      <div className="mx-auto flex w-full max-w-[1400px] flex-col px-6 md:px-12">
+        {/* Editorial Section Header */}
+        <div className="mb-24 flex flex-col items-start lg:mb-40">
+          <h2 className="text-accent mb-6 flex items-center gap-4 font-mono text-[10px] tracking-[0.3em] uppercase">
+            <span>03</span>
+            <span className="bg-accent/50 h-[1px] w-8" />
+            <span>Selected Work</span>
+          </h2>
+
+          <div className="flex w-full flex-col justify-between gap-8 lg:flex-row lg:items-end">
+            <h3 className={cn(TYPOGRAPHY.heading, 'max-w-4xl')}>
+              Projects built <br />
+              <span className="text-text-secondary italic">with purpose.</span>
+            </h3>
+
+            <p className="text-text-secondary/80 mb-2 max-w-sm text-sm leading-relaxed font-light">
+              A curated exhibition of digital experiences. We prioritize craftsmanship, precision,
+              and timeless design over sheer volume.
+            </p>
+          </div>
         </div>
 
-        <div className="pointer-events-auto hidden gap-6 md:flex">
-          {['All', 'Web', 'Video', 'Marketing'].map((category) => (
-            <button
-              key={category}
-              className="text-text-secondary hover:text-accent font-mono text-xs tracking-widest uppercase transition-colors"
-            >
-              {category}
-            </button>
+        {/* Projects Exhibition List */}
+        <div className="flex flex-col gap-32 md:gap-48 lg:gap-64">
+          {showcaseProjects.map((project, idx) => (
+            <PortfolioProject key={project.id} project={project} isFeatured={idx === 0} />
           ))}
         </div>
-      </div>
 
-      {/* Horizontal Scroll Track */}
-      <div
-        ref={trackRef}
-        className="mt-24 flex h-[70vh] w-[max-content] items-center gap-12 px-6 md:gap-32 md:px-12"
-      >
-        {PROJECTS_CONTENT.items.map((project, idx) => (
-          <PortfolioProject key={project.id} project={project} index={idx} />
-        ))}
-        {/* Spacer to ensure final card clears the viewport with a premium margin */}
-        <div className="w-[10vw] shrink-0 md:w-[20vw]" />
+        {/* Explore All Work CTA */}
+        <div className="mt-48 flex w-full justify-center md:mt-64">
+          <Link
+            href="/work"
+            className="group text-text-primary hover:text-accent flex items-center gap-6 font-serif text-3xl italic transition-colors duration-500 md:text-5xl"
+          >
+            Explore All Work
+            <span className="font-mono text-sm tracking-widest uppercase not-italic transition-transform duration-500 group-hover:translate-x-2 md:text-lg">
+              →
+            </span>
+          </Link>
+        </div>
       </div>
     </section>
   )

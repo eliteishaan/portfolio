@@ -1,34 +1,35 @@
 export const SERVICES_CONTENT = {
-  title: 'Our Capabilities',
-  subtitle: 'Services',
+  title: 'What I Can Do For You',
+  subtitle: '02 CAPABILITIES',
+  description: 'End-to-end solutions crafted with code, creativity and automation.',
   items: [
     {
       id: 'svc-01',
-      title: 'Product & Web',
-      description: 'High-performance web applications and digital products.',
-      image:
-        'https://images.unsplash.com/photo-1507238692062-7101eeaeb1b9?q=80&w=2000&auto=format&fit=crop',
+      number: '01',
+      title: 'Web Development',
+      description: 'High-performance websites and web applications built with modern architecture.',
+      tech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
     },
     {
       id: 'svc-02',
+      number: '02',
       title: 'Creative & Video',
-      description: 'Cinematic video production and commercial direction.',
-      image:
-        'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop',
+      description: 'Cinematic video production and creative visuals that tell your brand story.',
+      tech: ['Premiere Pro', 'After Effects', 'DaVinci Resolve', 'Cinema 4D'],
     },
     {
       id: 'svc-03',
+      number: '03',
       title: 'AI & Automation',
-      description: 'Intelligent workflows and custom AI integrations.',
-      image:
-        'https://images.unsplash.com/photo-1558655146-d09347e92766?q=80&w=2000&auto=format&fit=crop',
+      description: 'Intelligent automation and custom AI solutions to streamline your business.',
+      tech: ['Python', 'OpenAI API', 'LangChain', 'TensorFlow', 'Node.js'],
     },
     {
       id: 'svc-04',
-      title: 'Marketing Creatives',
-      description: 'Data-driven campaigns and immersive brand assets.',
-      image:
-        'https://images.unsplash.com/photo-1507238692062-7101eeaeb1b9?q=80&w=2000&auto=format&fit=crop',
+      number: '04',
+      title: 'Digital Systems',
+      description: 'Scalable infrastructure and digital products engineered for long-term growth.',
+      tech: ['AWS', 'Docker', 'Kubernetes', 'Redis', 'GraphQL'],
     },
   ],
 }

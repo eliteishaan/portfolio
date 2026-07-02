@@ -34,7 +34,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(({ className, .
       )}
       {...props}
     >
-      <Container maxWidth="xl" className="flex items-center justify-between">
+      <Container maxWidth="7xl" className="flex items-center justify-between">
         <Logo text={SITE_CONFIG.name} />
         <div className="flex items-center gap-6">
           <Navigation items={MAIN_NAVIGATION} />

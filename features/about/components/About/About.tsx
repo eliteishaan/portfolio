@@ -26,9 +26,9 @@ export const About = () => {
 
       gsap.fromTo(
         words,
-        { color: 'rgba(255, 255, 255, 0.25)' }, // Mid-grey that passes WCAG against black
+        { opacity: 0.25 },
         {
-          color: '#ffffff',
+          opacity: 1,
           stagger: 0.1,
           ease: 'none',
           scrollTrigger: {
@@ -51,11 +51,11 @@ export const About = () => {
     <section
       id="about"
       ref={containerRef}
-      className="bg-background relative flex w-full items-center justify-center overflow-hidden py-[clamp(8rem,20vw,16rem)]"
+      className="bg-background relative flex w-full items-center justify-center overflow-hidden py-[clamp(6rem,15vw,12rem)]"
     >
-      {/* Volumetric Amber Lighting */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 z-0 h-[1000px] w-[1000px] -translate-x-1/2 -translate-y-1/2 opacity-10 mix-blend-screen">
-        <div className="bg-[radial-gradient(circle_at_center,_theme(colors.accent.DEFAULT)_0%,_transparent_70%)] absolute inset-0 rounded-full blur-3xl" />
+      {/* Volumetric Amber Lighting (Performance Optimized) */}
+      <div className="pointer-events-none absolute top-1/2 left-1/2 z-0 h-[1000px] w-[1000px] -translate-x-1/2 -translate-y-1/2 opacity-15">
+        <div className="bg-[radial-gradient(circle_at_center,_theme(colors.accent.DEFAULT)_0%,_transparent_60%)] absolute inset-0 rounded-full" />
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1200px] px-6 text-center md:px-12">
@@ -65,16 +65,13 @@ export const About = () => {
           </span>
         </div>
 
-        <div
-          ref={textRef}
-          className={cn(
-            TYPOGRAPHY.display,
-            'text-[clamp(2rem,6vw,5rem)] leading-[1.1] tracking-tight'
-          )}
-        >
+        <div ref={textRef} className={cn(TYPOGRAPHY.heading, 'leading-[1.1] tracking-tight')}>
           {isClient ? (
             words.map((word, i) => (
-              <span key={i} className="word-span mr-[0.3em] inline-block transition-colors">
+              <span
+                key={i}
+                className="word-span mr-[0.3em] inline-block text-white transition-opacity will-change-[opacity]"
+              >
                 {word}
               </span>
             ))

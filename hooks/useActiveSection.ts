@@ -6,6 +6,8 @@ export const useActiveSection = (items: { href: string }[]) => {
   const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
+    if (items.length === 0) return
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

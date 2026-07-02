@@ -1,0 +1,52 @@
+---
+title: "Ravenhall Portfolio"
+slug: portfolio-website
+description: "A flagship digital product studio platform featuring 3D hardware optimizations, custom MDX architecture, and a dynamic asset ingestion pipeline."
+year: 2026
+category: "Engineering & Architecture"
+projectType: "Flagship Platform"
+homepage: true
+status: published
+liveUrl: ""
+githubUrl: ""
+coverImage: /api/media/portfolio-website/hero.webp
+presentationType: browser
+align: left
+order: 3
+summary: "The flagship portfolio for Ravenhall is a masterclass in modern frontend architecture. Designed to showcase technical excellence, it seamlessly combines a statically-generated Next.js App Router core with a custom Git-backed MDX content system, hardware-accelerated 3D environments, and a dynamic asset ingestion pipeline."
+---
+
+<ProjectOverview 
+  problem="A digital studio requires a portfolio that acts as a technical proof-of-concept. Standard templates suffer from rigid content structures, unoptimized 3D WebGL implementations that drain mobile batteries, and poor image asset pipelines."
+  objective="An ultra-performant, bespoke Next.js architecture boasting dynamic GPU tier detection, a Git-backed MDX rendering engine, and automated WebP transcoding for zero-compromise media delivery."
+/>
+
+<Process>
+  <div className="flex flex-col gap-8 items-center text-center max-w-3xl mx-auto">
+    <h2 className="text-accent font-mono text-[10px] tracking-widest uppercase">Platform Architecture</h2>
+    <div className="text-text-primary text-xl font-light">
+      Built on the Next.js App Router and statically compiled with Turbopack, this platform utilizes a custom Git-backed CMS. Projects are authored entirely in MDX, mapping Markdown directly to a semantic, Headless UI component layer.
+    </div>
+    <TechStack items={['Next.js 16', 'React 19', 'Tailwind CSS v4', 'Three.js', 'GSAP', 'MDX', 'Zustand']} />
+  </div>
+</Process>
+
+<Process>
+  <div className="flex flex-col gap-8 items-center text-center max-w-3xl mx-auto">
+    <h2 className="text-accent font-mono text-[10px] tracking-widest uppercase">Performance Engineering</h2>
+    <div className="text-text-primary text-xl font-light">
+      To achieve seamless load times and smooth 60fps animations, the architecture leverages dynamic GPU detection to adapt the Three.js device pixel ratio. A custom Node.js import pipeline automatically transcodes raw assets via `sharp`, while a centralized Project Stage engine programmatically renders premium device framing.
+    </div>
+  </div>
+</Process>
+
+<Gallery 
+  images={[
+    { src: '/api/media/portfolio-website/architecture.webp', title: 'System Architecture', caption: 'A custom, scalable foundation for digital storytelling.', layout: 'cinematic' },
+    { src: '/api/media/portfolio-website/hero.webp', title: 'Interactive WebGL', caption: 'Hardware-accelerated 3D rendering with dynamic GPU tier scaling.', layout: 'browser' }
+  ]}
+/>
+
+<Callout>
+  Thank you for exploring the Ravenhall portfolio. This platform serves as a living technical demonstration of modern frontend engineering.
+</Callout>

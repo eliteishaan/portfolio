@@ -1,0 +1,51 @@
+---
+title: "Archon AI"
+slug: archon-ai
+description: "An intelligent developer platform for automated static analysis and code architecture visualization."
+year: 2026
+category: "AI & Data Science"
+projectType: "Full-Stack Application"
+homepage: false
+status: published
+liveUrl: ""
+githubUrl: ""
+coverImage: /api/media/archon-ai/hero.webp
+presentationType: browser
+align: right
+order: 2
+summary: "Archon AI is an intelligent developer tools platform designed to act as an automated reviewer and software architect. By harnessing deep static analysis, bug detection, and generative AI, it empowers engineering teams to ship higher-quality code faster while maintaining instantly generated, interactive system architecture visualizations."
+---
+
+<ProjectOverview 
+  problem="Development teams often struggle with maintaining code quality, identifying complex logic bugs, and keeping system documentation synchronized with the codebase. Manual reviews are slow and prone to human error."
+  objective="An automated, AI-driven platform that integrates directly into the development workflow to provide continuous code analysis, instant API documentation, and interactive system architecture visualizations."
+/>
+
+<Callout>
+  Built with Next.js 16, React 19, and the Google Generative AI (Gemini 2.0 Flash) engine.
+</Callout>
+
+<Process>
+  <div className="flex flex-col gap-8 items-center text-center max-w-3xl mx-auto">
+    <h2 className="text-accent font-mono text-[10px] tracking-widest uppercase">Platform Architecture</h2>
+    <div className="text-text-primary text-xl font-light">
+      Archon AI operates as a unified Full-Stack application within a Turborepo workspace. It harnesses Gemini to process abstract syntax trees and generate intelligent architectural insights, while utilizing Firebase for secure data persistence.
+    </div>
+    <TechStack items={['Next.js 16', 'React 19', 'Tailwind CSS v4', 'TypeScript', 'Gemini AI', 'Firebase', 'Turborepo']} />
+  </div>
+</Process>
+
+<Gallery 
+  images={[
+    { src: '/api/media/archon-ai/gallery/01.webp', title: 'Platform Overview', caption: 'Product introduction and feature overview.', layout: 'browser' },
+    { src: '/api/media/archon-ai/gallery/03.webp', title: 'Repository Analysis', caption: 'Automated static code analysis overview.', layout: 'browser' },
+    { src: '/api/media/archon-ai/gallery/05.webp', title: 'Bug Detection', caption: 'AI-driven identification of runtime issues.', layout: 'browser' },
+    { src: '/api/media/archon-ai/gallery/07.webp', title: 'API Documentation', caption: 'Auto-generated Markdown documentation.', layout: 'browser' },
+    { src: '/api/media/archon-ai/gallery/08.webp', title: 'Architecture Visualization', caption: 'Interactive system diagram generation.', layout: 'browser' },
+    { src: '/api/media/archon-ai/gallery/09.webp', title: 'Authentication Flow', caption: 'Dual system with LocalStorage and Firebase Auth.', layout: 'browser' }
+  ]}
+/>
+
+<Callout>
+  Archon AI represents the future of automated code review. This project demonstrates how generative AI can seamlessly integrate into traditional engineering workflows.
+</Callout>

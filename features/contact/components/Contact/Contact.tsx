@@ -32,7 +32,7 @@ export const Contact = () => {
     <section
       id="contact"
       ref={containerRef}
-      className="bg-background relative z-10 flex h-[100svh] w-full flex-col justify-center overflow-hidden py-24"
+      className="bg-background relative z-10 flex h-[100svh] w-full flex-col justify-center overflow-hidden py-[clamp(6rem,15vw,12rem)]"
     >
       <div className="group/contact relative z-10 mx-auto flex w-full max-w-[1600px] flex-col items-center justify-center px-6 text-center md:px-12">
         {/* Massive Let's Talk */}

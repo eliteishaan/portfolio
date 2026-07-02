@@ -6,6 +6,7 @@
 
 :root {
   /* Semantic Colors - Light Mode */
+  --hero-bg: #0A0A0B;
   --background: #0A0A0B;
   --surface: #111112;
   --surface-elevated: #1A1A1C;
@@ -56,6 +57,7 @@
 
 .dark {
   /* Semantic Colors - Dark Mode */
+  --hero-bg: #0A0A0B;
   --background: #0A0A0B;
   --surface: #111112;
   --surface-elevated: #1A1A1C;
@@ -111,7 +113,10 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
+  }
+  *:focus-visible {
+    @apply outline-accent outline-2 outline-offset-4 outline-none;
   }
   html {
     scroll-behavior: smooth;

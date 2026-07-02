@@ -9,6 +9,7 @@ import { useBodyScrollLock } from '@/hooks/useBodyScrollLock'
 import { useClickOutside } from '@/hooks/useClickOutside'
 import { useFocusTrap } from '@/hooks/useFocusTrap'
 import { useActiveSection } from '@/hooks/useActiveSection'
+import { usePathname } from 'next/navigation'
 
 const MenuIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -50,9 +51,12 @@ const CloseIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigationProps>(
   ({ className, items, isOpen, onClose, onToggle, ...props }, ref) => {
+    const pathname = usePathname()
+    const isHome = pathname === '/'
+
     const wrapperRef = React.useRef<HTMLDivElement>(null)
     const menuRef = React.useRef<HTMLDivElement>(null)
-    const activeSection = useActiveSection(items)
+    const activeSection = useActiveSection(isHome ? items : [])
 
     const setWrapperRefs = React.useCallback(
       (node: HTMLDivElement | null) => {
@@ -68,7 +72,7 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
 
     useBodyScrollLock(isOpen)
     useClickOutside(wrapperRef, onClose, isOpen)
-    useFocusTrap(menuRef, isOpen)
+    useFocusTrap(wrapperRef, isOpen)
 
     React.useEffect(() => {
       const handleEscape = (e: KeyboardEvent) => {
@@ -87,6 +91,7 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
           onClick={onToggle}
           className="text-text-primary hover:bg-surface-elevated focus-visible:ring-ring relative z-50 inline-flex items-center justify-center rounded-md p-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           aria-expanded={isOpen}
+          aria-haspopup="dialog"
           aria-controls="mobile-menu"
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
         >
@@ -94,6 +99,7 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
         </button>
 
         <div
+          onClick={onClose}
           className={cn(
             'bg-background/95 fixed inset-0 z-40 backdrop-blur-sm transition-opacity duration-200 ease-out',
             isOpen ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
@@ -114,11 +120,16 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
         >
           {items.map((item) => {
             const isActive = activeSection === item.href
+            const linkHref = isHome ? item.href : `/${item.href}`
             return (
               <Link
                 key={item.href}
-                href={item.href}
-                onClick={onClose}
+                href={linkHref}
+                scroll={false} // Disable Next.js native jump
+                onClick={() => {
+                  if (!isHome) sessionStorage.setItem('pendingHashScroll', item.href)
+                  onClose()
+                }}
                 variant="unstyled"
                 className={cn(
                   'focus-visible:ring-ring rounded-md px-4 py-2 text-2xl font-medium tracking-tight transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none',
@@ -126,7 +137,7 @@ export const MobileNavigation = React.forwardRef<HTMLDivElement, MobileNavigatio
                     ? 'text-text-primary bg-surface-elevated'
                     : 'text-text-secondary hover:text-text-primary'
                 )}
-                aria-current={isActive ? 'page' : undefined}
+                aria-current={isActive ? 'true' : undefined}
               >
                 {item.label}
               </Link>

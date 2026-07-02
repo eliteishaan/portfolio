@@ -1,4 +1,5 @@
-﻿import type { NextConfig } from 'next'
+import type { NextConfig } from 'next'
+import createMDX from '@next/mdx'
 
 const isDev = process.env.NODE_ENV === 'development'
 
@@ -44,6 +45,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
   async headers() {
     return [
       {
@@ -54,4 +56,10 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default nextConfig
+const withMDX = createMDX({
+  options: {
+    remarkPlugins: [['remark-frontmatter', 'yaml'], 'remark-mdx-frontmatter'],
+  },
+})
+
+export default withMDX(nextConfig)

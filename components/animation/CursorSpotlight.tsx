@@ -4,6 +4,7 @@ import React, { useRef } from 'react'
 import { useGSAP } from '@gsap/react'
 import { gsap } from '@/lib/animation/gsap'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 
 export const CursorSpotlight = () => {
   const spotlightRef = useRef<HTMLDivElement>(null)
@@ -29,7 +30,7 @@ export const CursorSpotlight = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [prefersReducedMotion])
 
-  const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches
+  const isTouchDevice = useMediaQuery('(hover: none)')
   if (prefersReducedMotion || isTouchDevice) return null
 
   return (

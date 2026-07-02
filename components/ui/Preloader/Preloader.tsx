@@ -1,146 +1,163 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
-import { gsap, ScrollTrigger } from '@/lib/animation/gsap'
+import React, { useRef, useEffect, useState } from 'react'
+import { gsap } from '@/lib/animation/gsap'
 import { useGSAP } from '@gsap/react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
-import { Canvas } from '@react-three/fiber'
-import * as THREE from 'three'
+import { usePreloaderStore } from '@/hooks/usePreloaderStore'
 
 export const Preloader = () => {
-  const preloaderRef = useRef<HTMLDivElement>(null)
-  const meshRef = useRef<THREE.Mesh>(null)
-  const textRef = useRef<HTMLDivElement>(null)
-  const cameraRef = useRef<THREE.Group>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const bgRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const rRef = useRef<HTMLSpanElement>(null)
+  const avenhallRef = useRef<HTMLSpanElement>(null)
+  const glowRef = useRef<HTMLDivElement>(null)
+
   const prefersReducedMotion = useReducedMotion()
-  const [showCanvas, setShowCanvas] = useState(true)
+  const { setReady } = usePreloaderStore()
+  const [shouldRender, setShouldRender] = useState(true)
+
+  useEffect(() => {
+    if (prefersReducedMotion) {
+      setReady()
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setShouldRender(false)
+    }
+  }, [prefersReducedMotion, setReady])
 
   useGSAP(
     () => {
-      if (prefersReducedMotion) {
-        gsap.set(preloaderRef.current, { autoAlpha: 0, display: 'none', pointerEvents: 'none' })
-        return
+      if (!shouldRender) return
+
+      // Pre-calculate target logo position
+      const getTargetRect = () => {
+        // Target the desktop logo SVG specifically since mobile is hidden
+        const target = document.querySelector('header a[aria-label="Home"] svg.md\\:block')
+        if (target) return target.getBoundingClientRect()
+        // Fallback if not found
+        return { top: 24, left: 24, width: 140, height: 20 }
       }
 
       // Initial States
-      if (meshRef.current) {
-        gsap.set(meshRef.current.position, { y: 15 }) // Drop from high up
-        gsap.set(meshRef.current.scale, { x: 1, y: 1, z: 1 })
-      }
-      gsap.set(textRef.current, { clipPath: 'inset(0 50% 0 50%)', opacity: 0 })
+      gsap.set(bgRef.current, { opacity: 1 })
+      gsap.set(rRef.current, { y: -30, opacity: 0 })
+      gsap.set(avenhallRef.current, { clipPath: 'inset(0 100% 0 0)' })
+      gsap.set(glowRef.current, { opacity: 0 })
 
-      const tl = gsap.timeline({
-        onComplete: () => {
-          gsap.set(preloaderRef.current, { display: 'none', pointerEvents: 'none' })
-          setShowCanvas(false)
-          ScrollTrigger.refresh()
-        },
-      })
+      const tl = gsap.timeline()
 
-      // 0.0s - 1.0s (The Drop)
-      if (meshRef.current && cameraRef.current) {
-        tl.to(
-          meshRef.current.position,
-          {
-            y: 0,
-            duration: 1.0,
-            ease: 'expo.in',
-            onComplete: () => {
-              // Subtle camera shake on impact
-              if (cameraRef.current) {
-                gsap.fromTo(
-                  cameraRef.current.position,
-                  { y: 0.2, x: 0.1 },
-                  { y: 0, x: 0, duration: 0.1, ease: 'power4.out', clearProps: 'all' }
-                )
-              }
-            },
-          },
-          0
-        )
-
-        // 1.3s - 2.1s (The Mechanical Expansion)
-        tl.to(
-          meshRef.current.scale,
-          {
-            x: 50, // Massive horizontal expansion
-            y: 0.1,
-            z: 0.1,
-            duration: 0.8,
-            ease: 'expo.inOut',
-          },
-          1.3
-        )
-      }
-
+      // FRAME 02: 'R' enters from above (heavy, slow water droplet feel)
       tl.to(
-        textRef.current,
+        rRef.current,
         {
-          clipPath: 'inset(0 0% 0 0%)',
+          y: 0,
           opacity: 1,
-          duration: 0.8,
-          ease: 'expo.inOut',
+          duration: 1.2,
+          ease: 'power3.out',
         },
-        '<' // Use absolute syncing to the previous box expansion tween
+        0.2
       )
 
-      // 2.1s - 3.0s (Hold)
-
-      // 3.0s - 4.0s (The Exit)
       tl.to(
-        preloaderRef.current,
+        glowRef.current,
         {
-          clipPath: 'inset(0 0 100% 0)',
-          duration: 1.0,
+          opacity: 0.15,
+          duration: 1.4,
+          ease: 'power2.out',
+        },
+        0.2
+      )
+
+      // FRAME 04: "AVENHALL" reveals from the R (slow and graceful)
+      tl.to(
+        avenhallRef.current,
+        {
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 0.8,
           ease: 'power3.inOut',
         },
-        3.0
-      )
+        1.4
+      ) // Starts after R is completely settled
+
+      // FRAME 06: Travel upward to navbar & reveal Hero (smooth float)
+      tl.add(() => {
+        const source = wrapperRef.current?.getBoundingClientRect()
+        const target = getTargetRect()
+
+        if (source && wrapperRef.current) {
+          const scale = target.width / source.width
+
+          // Calculate movement delta from centers
+          const sourceCenterX = source.left + source.width / 2
+          const sourceCenterY = source.top + source.height / 2
+          const targetCenterX = target.left + target.width / 2
+          const targetCenterY = target.top + target.height / 2
+
+          gsap.to(wrapperRef.current, {
+            x: targetCenterX - sourceCenterX,
+            y: targetCenterY - sourceCenterY,
+            scale: scale,
+            duration: 1.0, // Increased for ultra smoothness
+            ease: 'power3.inOut',
+          })
+
+          // Concurrently fade out the black background to reveal Hero
+          gsap.to(bgRef.current, {
+            opacity: 0,
+            duration: 1.0,
+            ease: 'power2.inOut',
+            onComplete: () => {
+              setReady()
+              setTimeout(() => setShouldRender(false), 50)
+            },
+          })
+
+          // Fade out the glow
+          gsap.to(glowRef.current, {
+            opacity: 0,
+            duration: 0.8,
+            ease: 'power2.inOut',
+          })
+        }
+      }, 2.6) // Hold completed word for 0.4s before moving
     },
-    { scope: preloaderRef, dependencies: [prefersReducedMotion] }
+    { scope: containerRef, dependencies: [shouldRender] }
   )
+
+  if (!shouldRender) return null
 
   return (
     <div
-      ref={preloaderRef}
-      className="preloader-wrapper pointer-events-auto fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
+      ref={containerRef}
+      className="pointer-events-none fixed inset-0 z-[9999] flex items-center justify-center"
     >
-      <div className="relative flex items-center justify-center">
-        {/* The Exact RAVENHALL text behind the box */}
-        <div
-          ref={textRef}
-          className="brand-text relative z-0 font-serif font-bold text-white italic select-none"
-          style={{
-            fontSize: 'clamp(3rem, 8vw, 6rem)',
-            lineHeight: 0.8,
-            letterSpacing: '-0.02em',
-          }}
-        >
-          RAVENHALL
-        </div>
+      {/* Matte black background */}
+      <div ref={bgRef} className="absolute inset-0 bg-[#020202]" />
 
-        {/* The 3D Monolith Canvas */}
-        {showCanvas && (
-          <div className="pointer-events-none absolute inset-0 z-10">
-            <Canvas camera={{ position: [0, 0, 10], fov: 35 }}>
-              <group ref={cameraRef}>
-                <spotLight
-                  position={[0, 10, 5]}
-                  angle={0.5}
-                  penumbra={1}
-                  intensity={5}
-                  color="#ffffff"
-                  castShadow
-                />
-                <ambientLight intensity={0.5} />
-                <mesh ref={meshRef}>
-                  <boxGeometry args={[1, 1, 1]} />
-                  <meshStandardMaterial color="#2a2a2a" metalness={0.9} roughness={0.2} />
-                </mesh>
-              </group>
-            </Canvas>
-          </div>
-        )}
+      {/* Ambient bottom glow */}
+      <div
+        ref={glowRef}
+        className="pointer-events-none absolute bottom-1/3 h-[2px] w-1/2 bg-[#FFB84D] opacity-0 blur-[40px]"
+      />
+
+      {/* Central Typography Wrapper */}
+      <div
+        ref={wrapperRef}
+        className="pointer-events-none relative flex origin-center items-center justify-center"
+      >
+        <h1 className="m-0 flex overflow-hidden p-0 font-serif text-[clamp(2.5rem,8vw,5rem)] leading-none font-bold tracking-[0.1em] whitespace-nowrap text-white italic">
+          <span ref={rRef} className="inline-block transform opacity-0">
+            R
+          </span>
+          <span
+            ref={avenhallRef}
+            className="inline-block"
+            style={{ clipPath: 'inset(0 100% 0 0)' }}
+          >
+            AVENHALL
+          </span>
+        </h1>
       </div>
     </div>
   )

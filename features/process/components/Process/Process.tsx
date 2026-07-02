@@ -58,9 +58,7 @@ export const Process = () => {
       <div className="mx-auto w-full max-w-[1600px] px-6 md:px-12" ref={containerRef}>
         <div className="border-border/30 mb-12 flex flex-col gap-4 border-b pb-8">
           <span className={TYPOGRAPHY.metadata}>{PROCESS_CONTENT.subtitle}</span>
-          <h2 className={cn(TYPOGRAPHY.display, 'text-[clamp(3rem,8vw,10rem)]')}>
-            {PROCESS_CONTENT.title}
-          </h2>
+          <h2 className={TYPOGRAPHY.display}>{PROCESS_CONTENT.title}</h2>
         </div>
 
         <div className="relative ml-4 flex flex-col gap-16 md:ml-12 lg:gap-24">
@@ -84,9 +82,7 @@ export const Process = () => {
                 <span className="text-accent font-mono text-sm tracking-widest opacity-70">
                   {item.number} {'//'}
                 </span>
-                <h3 className="text-text-primary font-serif text-3xl tracking-tight md:text-5xl">
-                  {item.title}
-                </h3>
+                <h3 className={TYPOGRAPHY.subheading}>{item.title}</h3>
               </div>
               <p className={cn(TYPOGRAPHY.manifesto, 'text-text-secondary max-w-xl')}>
                 {item.description}

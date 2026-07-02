@@ -1,0 +1,56 @@
+---
+title: "SkillForge System"
+slug: skillforge-system
+description: "The System Career Operating System for Students."
+year: 2026
+category: "AI & Education"
+projectType: "Hackathon Project"
+homepage: true
+status: published
+liveUrl: "https://skillforge-w34v.onrender.com/"
+coverImage: /api/media/skillforge-system/hero.webp
+presentationType: browser
+align: left
+order: 5
+summary: "The SkillForge System is a unified career operating platform built to bridge the gap between educational credentials and industry competency. It automatically processes unstructured transcripts via multi-language OCR, evaluates placement probability, and generates highly adaptive GPT-4 learning roadmaps to systematically close skill gaps."
+---
+
+<ProjectOverview 
+  problem="Students often lack clarity on the precise skills required for industry placements. Traditional career guidance relies on guesswork rather than actionable, data-driven comparisons against real market demand."
+  objective="An intelligent Career Operating System that reads transcripts via multi-language OCR, builds a 'System Career Twin', and generates an adaptive learning roadmap utilizing GPT-4 to systematically close skill gaps."
+/>
+
+<Callout>
+  Built by Team CODEX (LNCT Group of Colleges) for the CPL 2026 Smart Education Track.
+</Callout>
+
+<Metrics 
+  items={[
+    { label: 'Event', value: 'CPL 2026' },
+    { label: 'Focus', value: 'Smart Education' },
+    { label: 'AI Models', value: 'GPT-4 & BERT' }
+  ]} 
+/>
+
+<Process>
+  <div className="flex flex-col gap-8 items-center text-center max-w-3xl mx-auto">
+    <h2 className="text-accent font-mono text-[10px] tracking-widest uppercase">Intelligent Pipeline</h2>
+    <div className="text-text-primary text-xl font-light">
+      The platform operates on a robust 5-step pipeline: extracting unstructured academic data via EasyOCR (supporting regional scripts), mapping vector alignments to market benchmarks, and deploying a browser companion to auto-fill job forms based on the student's verified profile.
+    </div>
+    <TechStack items={['Next.js', 'Google OAuth', 'GPT-4', 'BERT', 'EasyOCR']} />
+  </div>
+</Process>
+
+<Gallery 
+  images={[
+    { src: '/api/media/skillforge-system/gallery/01.webp', title: 'Dashboard Analytics', caption: 'Employability Score and Placement Probability tracking.', layout: 'browser' },
+    { src: '/api/media/skillforge-system/gallery/02.webp', title: 'Adaptive Roadmap', caption: 'Week-by-week GPT-4 generated learning path.', layout: 'browser' },
+    { src: '/api/media/skillforge-system/gallery/03.webp', title: 'Resume DNA', caption: 'Heatmap visualization of technical skill vectors.', layout: 'browser' },
+    { src: '/api/media/skillforge-system/gallery/04.webp', title: 'System Mock Interviewer', caption: 'Webcam-based evaluation for speech and posture.', layout: 'browser' }
+  ]}
+/>
+
+<Callout>
+  Test the capabilities of the SkillForge OCR and roadmap generation engines by interacting with the live playground deployment.
+</Callout>
